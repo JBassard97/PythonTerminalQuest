@@ -1,9 +1,9 @@
 from utils.logo import print_logo
-from utils.helpers import clear_terminal, add_vertical_spaces, wait_for_space_press
+from utils.helpers import clear_terminal, add_vertical_spaces, wait_for_space_press, color_text
 
 def start_game():
     clear_terminal()
-    print("\nWelcome to...\n")
+    print(f"\n{color_text('Welcome to...', 'cyan')}\n")
     print_logo()
     add_vertical_spaces(5)
     wait_for_space_press()
@@ -23,7 +23,7 @@ def get_player_info():
             if len(name_input.strip()) < 1:
                 print("Have you no name? What's REALLY your name?")
                 
-            elif not name_input.isalpha():
+            elif not name_input.replace(" ", "").isalnum():
                 print("That's not a real name! Be serious!")
     
             else:
