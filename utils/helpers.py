@@ -2,6 +2,7 @@ import os
 import sys
 import keyboard
 
+
 # Clears the terminal
 def clear_terminal():
     if sys.platform.startswith("win"):
@@ -9,15 +10,21 @@ def clear_terminal():
     else:
         os.system("clear")  # For Mac/Linux
 
+
 # Adds vertical space according to 'count' param
 def add_vertical_spaces(count: int):
     for i in range(count):
         print("")
 
+
 # Clears terminal and adds a single vertical space for aesthetics
 def reset_screen():
     clear_terminal()
     add_vertical_spaces(1)
+
+
+def graceful_exit():
+    sys.exit()
 
 
 def color_text(text: str, color: str):
@@ -56,3 +63,21 @@ def wait_for_space_press():
                 sys.exit()  # Leave Game
             elif pressed_key == "space":
                 return  # Continue Game
+
+
+def convert_to_dict(
+    player_name: str,
+    player_weapon_class: str,
+    player_color: str,
+    player_companion_type: str,
+    player_companion_name: str,
+):
+    player_save = {
+        "name": player_name,
+        "weapon_class": player_weapon_class,
+        "color": player_color,
+        "companion_type": player_companion_type,
+        "companion_name": player_companion_name,
+    }
+
+    return player_save

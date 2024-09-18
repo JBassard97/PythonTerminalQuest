@@ -1,10 +1,13 @@
 from .helpers import color_text, add_vertical_spaces, reset_screen
 
+
 # Returns Capitalized
 def ask_name():
     while True:
         name_input = (
-            input(f"{color_text('What is your name, adventurer? ', 'cyan')}")
+            input(
+                f"{color_text('What is your name, adventurer? (This is permanent!) ', 'cyan')}"
+            )
             .strip()
             .capitalize()
         )
@@ -25,13 +28,14 @@ def ask_name():
         else:
             return name_input
 
+
 # Returns lowercase
 def ask_weapon_class():
     weapon_choices = ["swordsman", "archer", "magician"]
     while True:
         weapon_input = (
             input(
-                f"{color_text('What weapon class are you starting your journey with?', 'cyan')}\n"
+                f"{color_text('What weapon class are you starting your journey with? (This may be changed later!)', 'cyan')}\n"
                 f"{color_text('Swordsman', 'magenta')}: ({color_text('Attack: Mid', 'blue')},{color_text(' Defense: High', 'green')},{color_text(' Speed: Low', 'red')})\n"
                 f"{color_text('Archer', 'magenta')}: ({color_text('Attack: Low', 'red')},{color_text(' Defense: Mid', 'blue')},{color_text(' Speed: High', 'green')})\n"
                 f"{color_text('Magician', 'magenta')}: ({color_text('Attack: High', 'green')},{color_text(' Defense: Low', 'red')},{color_text(' Speed: Mid', 'blue')})\n\n"
@@ -59,6 +63,7 @@ def ask_weapon_class():
         else:
             return weapon_input
 
+
 # Returns lowercase
 def ask_color():
     color_choices = ["Red", "Blue", "Green", "Cyan", "Magenta", "Yellow"]
@@ -69,7 +74,7 @@ def ask_color():
 
         color_input = (
             input(
-                f"\n{color_text('What is your favorite color? (This can be changed later)', 'cyan')}\n"
+                f"\n{color_text('What is your favorite color? (This may be changed later!)', 'cyan')}\n"
             )
             .strip()
             .lower()
@@ -92,6 +97,7 @@ def ask_color():
             )
             add_vertical_spaces(1)
 
+
 # Returns lowercase
 def ask_companion_type(player_weapon_class: str):
     if player_weapon_class == "swordsman":
@@ -110,7 +116,8 @@ def ask_companion_type(player_weapon_class: str):
         companion_type_input = (
             input(
                 color_text(
-                    "Which animal friend will accompany on your journey? ", "cyan"
+                    "Which animal friend will accompany on your journey? (This may be changed later!) ",
+                    "cyan",
                 )
             )
             .strip()
@@ -142,12 +149,19 @@ def ask_companion_type(player_weapon_class: str):
         else:
             return companion_type_input
 
+
 # Returns Capitalized
 def ask_companion_name():
     while True:
-        companion_name_input = input(
-            color_text("What is you animal friend's name? ", "cyan")
-        ).strip().capitalize()
+        companion_name_input = (
+            input(
+                color_text(
+                    "What is you animal friend's name? (This is permanent!) ", "cyan"
+                )
+            )
+            .strip()
+            .capitalize()
+        )
         if len(companion_name_input) < 1:  # Entered Nothing
             reset_screen()
             print(
@@ -167,3 +181,51 @@ def ask_companion_name():
 
         else:
             return companion_name_input
+
+
+def ask_confirmation(
+    player_name: str,
+    player_weapon_class: str,
+    player_color: str,
+    player_companion_type: str,
+    player_companion_name: str,
+):
+    valid_answers = ["yes", "no"]
+    while True:
+        print(
+            f"{color_text('You are a skilled', 'cyan')} {color_text(player_weapon_class, player_color)} {color_text('named', 'cyan')} {color_text(player_name, player_color)}.\n"
+            f"{color_text(player_color.capitalize(), player_color)} {color_text('is your favorite color.', 'cyan')} {color_text('I will not forget this.', 'yellow')}\n"
+            f"{color_text('You are joined on your journey by a', 'cyan')} {color_text(player_companion_type, player_color)} {color_text('named', 'cyan')} {color_text(player_companion_name, player_color)}."
+        )
+        confirmation_input = (
+            input(
+                color_text(
+                    "Are you fully satisfied with the information you've divulged? (Yes or No) ",
+                    "yellow",
+                )
+            )
+            .strip()
+            .lower()
+        )
+        if len(confirmation_input) < 1:
+            reset_screen()
+            print(
+                color_text(
+                    "It's very important that we iron out these details from the beginning...",
+                    "red",
+                )
+            )
+            add_vertical_spaces(1)
+            continue
+
+        if confirmation_input not in valid_answers:
+            reset_screen()
+            print(color_text("Only a 'Yes' or 'No' will suffice here...", "red"))
+            add_vertical_spaces(1)
+            continue
+
+        elif confirmation_input == "no":
+            return False
+
+        else:
+            return True
