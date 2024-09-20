@@ -1,6 +1,6 @@
 from utils.helpers import color_text
 
-sprite_dict = {  # each sprite is 12 x 22
+sprite_dict = {  # each sprite is within 12 x 22
     "archer": {
         "a": r"                      ",
         "b": r"        .    ____     ",
@@ -190,7 +190,7 @@ def sprite_test_print():
     print("\n\nBEGIN SPRITE TEST PRINT\n")
 
     for sprite in sprite_dict:
-        print(f"{sprite}")
+        print(color_text(sprite, "cyan"))
         for line in sprite_dict[sprite].values():
             print(line)
         else:

@@ -3,7 +3,7 @@ from utils.logo import print_logo
 from utils.helpers import (
     clear_terminal,
     add_vertical_spaces,
-    wait_for_space_press,
+    wait_for_space_or_esc,
     color_text,
     reset_screen,
     convert_to_dict,
@@ -18,6 +18,7 @@ from utils.start_questions import (
     ask_confirmation,
 )
 from db.db_functions import save_player_data, reload_player_data, clear_player_db
+from lore.series_1.story_part_1 import tell_story
 
 
 def start_game():
@@ -25,7 +26,7 @@ def start_game():
     print(f"\n{color_text('Welcome to...', 'cyan')}\n")
     print_logo()
     add_vertical_spaces(2)
-    wait_for_space_press()
+    wait_for_space_or_esc()
     reset_screen()
     player_data = reload_player_data()
 
@@ -129,10 +130,10 @@ def get_player_info():
 def begin_adventure():
     reset_screen()
     player_data = reload_player_data()
-    print("CURRENT PLAYER DATA:\n", player_data)
+    tell_story()
 
 
-# start_game()
+start_game()
 # sprite_test_print()
 
-print_sprites_side_by_side(["archer", "magician", "swordsman"], "blue")
+# print_sprites_side_by_side(["archer", "magician", "swordsman"], "blue")

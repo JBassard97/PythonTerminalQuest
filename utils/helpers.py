@@ -47,7 +47,7 @@ def color_text(text: str, color: str):
     return f"{ansi_code}{text}{reset_code}"
 
 
-def wait_for_space_press():
+def wait_for_space_or_esc():
     print(f"{color_text('Press SPACE to continue', 'green')}")
     print(f"{color_text('       OR', 'blue')}")
     print(f"{color_text('Press ESC to quit', 'red')}")
@@ -63,6 +63,18 @@ def wait_for_space_press():
                 sys.exit()  # Leave Game
             elif pressed_key == "space":
                 return  # Continue Game
+
+
+def press_space_to_continue():
+    print(color_text("Press SPACE to continue...", "yellow"))
+    while True:
+
+        event = keyboard.read_event(suppress=True)
+        pressed_key = event.name
+
+        if event.event_type == keyboard.KEY_DOWN:
+            if pressed_key == "space":
+                return
 
 
 def convert_to_dict(
