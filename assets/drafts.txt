@@ -1,0 +1,6 @@
+PROTAGONISTS
+completed => (archer, magician, swordsman falcon, bear, wolf, cat)
+
+
+ENEMIES
+completed => (spider)

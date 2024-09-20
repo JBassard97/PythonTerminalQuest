@@ -1,3 +1,4 @@
+from assets.ascii_sprites import sprite_test_print, print_sprites_side_by_side
 from utils.logo import print_logo
 from utils.helpers import (
     clear_terminal,
@@ -16,8 +17,7 @@ from utils.start_questions import (
     ask_companion_name,
     ask_confirmation,
 )
-from db.db_functions import save_player_data, clear_db
-from db.db import player_data
+from db.db_functions import save_player_data, reload_player_data, clear_player_db
 
 
 def start_game():
@@ -27,6 +27,7 @@ def start_game():
     add_vertical_spaces(2)
     wait_for_space_press()
     reset_screen()
+    player_data = reload_player_data()
 
     if player_data:
         while True:
@@ -40,8 +41,8 @@ def start_game():
             )
 
             if continue_confirmation == "start fresh":
-                clear_db()
-                graceful_exit()
+                clear_player_db()
+                get_player_info()
                 break
             if continue_confirmation == "continue":
                 begin_adventure()
@@ -127,8 +128,11 @@ def get_player_info():
 
 def begin_adventure():
     reset_screen()
-    print("The adventure has begun")
-    print(player_data)
+    player_data = reload_player_data()
+    print("CURRENT PLAYER DATA:\n", player_data)
 
 
-start_game()
+# start_game()
+# sprite_test_print()
+
+print_sprites_side_by_side(["archer", "magician", "swordsman"], "blue")

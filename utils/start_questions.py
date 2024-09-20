@@ -4,13 +4,9 @@ from .helpers import color_text, add_vertical_spaces, reset_screen
 # Returns Capitalized
 def ask_name():
     while True:
-        name_input = (
-            input(
-                f"{color_text('What is your name, adventurer? (This is permanent!) ', 'cyan')}"
-            )
-            .strip()
-            .capitalize()
-        )
+        name_input = input(
+            f"{color_text('What is your name, adventurer? (This is permanent!) ', 'cyan')}"
+        ).strip()
         if len(name_input) < 1:  # Entered Nothing
             reset_screen()
             print(
@@ -18,9 +14,7 @@ def ask_name():
             )
             add_vertical_spaces(1)
 
-        elif not name_input.replace(
-            " ", ""
-        ).isalnum():  # Isn't alphanumeric (allows spaces)
+        elif not any(char.isalnum() for char in name_input):
             reset_screen()
             print(f"{color_text('That is not a real name! Be serious!', 'red')}")
             add_vertical_spaces(1)
@@ -105,7 +99,7 @@ def ask_companion_type(player_weapon_class: str):
     if player_weapon_class == "archer":
         companion_choices = ["falcon", "crow", "raven"]
     if player_weapon_class == "magician":
-        companion_choices = ["cat", "frog", "lizard", "owl"]
+        companion_choices = ["cat", "frog", "newt", "owl"]
 
     for companion in companion_choices:
         print(color_text(companion.capitalize(), "magenta"))
@@ -116,7 +110,7 @@ def ask_companion_type(player_weapon_class: str):
         companion_type_input = (
             input(
                 color_text(
-                    "Which animal friend will accompany on your journey? (This may be changed later!) ",
+                    "Which animal friend will accompany you on your journey? (They all begin at equal strength, and may be swapped out later!) ",
                     "cyan",
                 )
             )
@@ -153,15 +147,11 @@ def ask_companion_type(player_weapon_class: str):
 # Returns Capitalized
 def ask_companion_name():
     while True:
-        companion_name_input = (
-            input(
-                color_text(
-                    "What is you animal friend's name? (This is permanent!) ", "cyan"
-                )
+        companion_name_input = input(
+            color_text(
+                "What is you animal friend's name? (This is permanent!) ", "cyan"
             )
-            .strip()
-            .capitalize()
-        )
+        ).strip()
         if len(companion_name_input) < 1:  # Entered Nothing
             reset_screen()
             print(
@@ -195,13 +185,13 @@ def ask_confirmation(
         print(
             f"{color_text('You are a skilled', 'cyan')} {color_text(player_weapon_class, player_color)} {color_text('named', 'cyan')} {color_text(player_name, player_color)}.\n"
             f"{color_text(player_color.capitalize(), player_color)} {color_text('is your favorite color.', 'cyan')} {color_text('I will not forget this.', 'yellow')}\n"
-            f"{color_text('You are joined on your journey by a', 'cyan')} {color_text(player_companion_type, player_color)} {color_text('named', 'cyan')} {color_text(player_companion_name, player_color)}."
+            f"{color_text('You are joined on your journey by a', 'cyan')} {color_text(player_companion_type, player_color)} {color_text('named', 'cyan')} {color_text(player_companion_name, player_color)}.\n"
         )
         confirmation_input = (
             input(
                 color_text(
                     "Are you fully satisfied with the information you've divulged? (Yes or No) ",
-                    "yellow",
+                    "magenta",
                 )
             )
             .strip()
