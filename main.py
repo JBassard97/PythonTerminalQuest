@@ -1,4 +1,9 @@
-from assets.battle_ascii_sprites import sprite_test_print, print_sprites_side_by_side
+from assets.battle_ascii_sprites import (
+    battle_sprite_test_print,
+    print_single_battle_sprite,
+    print_battle_sprites_side_by_side,
+)
+from assets.large_ascii_sprites import large_sprite_test_print
 from assets.sound_effects import play_async_audio
 from utils.logo import print_logo
 from utils.helpers import (
@@ -19,7 +24,7 @@ from utils.start_questions import (
     ask_confirmation,
 )
 from db.db_functions import save_player_data, reload_player_data, clear_player_db
-from lore.series_1.story_part_1 import tell_story_part_1
+from lore.series_1.part_1 import dialogue_series_1_part_1
 
 
 def start_game():
@@ -131,13 +136,14 @@ def get_player_info():
 
 
 def begin_adventure():
-    reset_screen()
     player_data = reload_player_data()
-    tell_story_part_1(player_data)
+    dialogue_series_1_part_1(player_data)
 
 
 # start_game()
 
-# sprite_test_print()
+# battle_sprite_test_print()
+# print_single_battle_sprite("spider", "green")
+# print_battle_sprites_side_by_side(["scorpion", "spider"], "red", ["swordsman", "dog"], "blue")
 
-# print_sprites_side_by_side(["scorpion", "spider"], "red", ["swordsman", "dog"], "blue")
+large_sprite_test_print()

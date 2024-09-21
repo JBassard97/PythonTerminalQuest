@@ -6,3 +6,6 @@ bear, wolf, cat, owl, dog, crow, flamingo, frog)
 
 ENEMIES
 completed => (spider, scorpion)
+
+LARGE
+completed => ()

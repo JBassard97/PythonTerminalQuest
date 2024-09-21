@@ -1,6 +1,6 @@
 from utils.helpers import color_text
 
-sprite_dict = {  # each sprite is within 12 x 22
+battle_sprite_dict = {  # each sprite is within 12 x 22
     "archer": {
         "a": r"                      ",
         "b": r"        .    ____     ",
@@ -298,29 +298,37 @@ sprite_dict = {  # each sprite is within 12 x 22
 }
 
 
-def sprite_test_print():
-    print("\n\nBEGIN SPRITE TEST PRINT\n")
+def battle_sprite_test_print():
+    print("\n\nBEGIN BATTLE SPRITE TEST PRINT\n")
 
-    for sprite in sprite_dict:
+    for sprite in battle_sprite_dict:
         print(color_text(sprite, "cyan"))
-        for line in sprite_dict[sprite].values():
+        for line in battle_sprite_dict[sprite].values():
             print(line)
         else:
             print("")
 
 
-def print_sprites_side_by_side(
+def print_single_battle_sprite(sprite_name: str, sprite_color: str):
+    if sprite_name in battle_sprite_dict.keys():
+        for line in battle_sprite_dict[sprite_name].values():
+            print(color_text(line, sprite_color))
+    else:
+        raise ValueError("sprite_name string not valid/not a key in battle_sprite_dict")
+
+
+def print_battle_sprites_side_by_side(
     enemy_sprites: list,
     enemy_color: str,
     protag_sprites: list = None,
     protag_color: str = None,
 ):
     # Create dictionaries for enemy sprites
-    enemy_lines = {key: sprite_dict[key] for key in enemy_sprites}
+    enemy_lines = {key: battle_sprite_dict[key] for key in enemy_sprites}
 
     # Optional: Initialize protagonist lines only if protag_sprites is provided
     protag_lines = (
-        {key: sprite_dict[key] for key in protag_sprites} if protag_sprites else {}
+        {key: battle_sprite_dict[key] for key in protag_sprites} if protag_sprites else {}
     )
 
     spacing = "          "
