@@ -1,4 +1,5 @@
 from .helpers import color_text, add_vertical_spaces, reset_screen
+from assets.sound_effects import play_async_audio
 
 
 # Returns Capitalized
@@ -8,6 +9,7 @@ def ask_name():
             f"{color_text('What is your name, adventurer? (This is permanent!) ', 'cyan')}"
         ).strip()
         if len(name_input) < 1:  # Entered Nothing
+            play_async_audio("decline")
             reset_screen()
             print(
                 f"{color_text('Have you no name? Truly you MUST have one...', 'red')}"
@@ -15,11 +17,13 @@ def ask_name():
             add_vertical_spaces(1)
 
         elif not any(char.isalnum() for char in name_input):
+            play_async_audio("decline")
             reset_screen()
             print(f"{color_text('That is not a real name! Be serious!', 'red')}")
             add_vertical_spaces(1)
 
         else:
+            play_async_audio("accept")
             return name_input
 
 
@@ -39,6 +43,7 @@ def ask_weapon_class():
         )
 
         if len(weapon_input) < 1:  # Entered Nothing
+            play_async_audio("decline")
             reset_screen()
             print(
                 f"{color_text('It is dangerous to venture out skill-less! You MUST choose between the three', 'red')}"
@@ -48,6 +53,7 @@ def ask_weapon_class():
         elif (
             weapon_input not in weapon_choices
         ):  # If it's not one of the 3 choices (case insensitive)
+            play_async_audio("decline")
             reset_screen()
             print(
                 f"{color_text('That weapon class is not in the list of choices! Choose from one of the three...', 'red')}"
@@ -55,6 +61,7 @@ def ask_weapon_class():
             add_vertical_spaces(1)
 
         else:
+            play_async_audio("accept")
             return weapon_input
 
 
@@ -74,7 +81,8 @@ def ask_color():
             .lower()
         )
 
-        if len(color_input) < 1:  # It's not doing this for empty inputs
+        if len(color_input) < 1:
+            play_async_audio("decline")
             reset_screen()
             print(
                 f"{color_text('Surely one of these colors strikes your fancy?', 'red')}"
@@ -83,8 +91,10 @@ def ask_color():
             continue
 
         if color_input.lower() in [color.lower() for color in color_choices]:
+            play_async_audio("accept")
             return color_input  # Valid input, exit loop and return
         else:
+            play_async_audio("decline")
             reset_screen()
             print(
                 f"{color_text('That color is not supported in this kingdom!', 'red')}"
@@ -97,9 +107,9 @@ def ask_companion_type(player_weapon_class: str):
     if player_weapon_class == "swordsman":
         companion_choices = ["dog", "wolf", "bear"]
     if player_weapon_class == "archer":
-        companion_choices = ["falcon", "crow", "raven"]
+        companion_choices = ["falcon", "crow", "flamingo"]
     if player_weapon_class == "magician":
-        companion_choices = ["cat", "frog", "newt", "owl"]
+        companion_choices = ["cat", "frog", "owl"]
 
     for companion in companion_choices:
         print(color_text(companion.capitalize(), "magenta"))
@@ -119,6 +129,7 @@ def ask_companion_type(player_weapon_class: str):
         )
 
         if len(companion_type_input) < 1:
+            play_async_audio("decline")
             reset_screen()
             print(
                 color_text(
@@ -130,6 +141,7 @@ def ask_companion_type(player_weapon_class: str):
             continue
 
         if companion_type_input not in companion_choices:
+            play_async_audio("decline")
             reset_screen()
             print(
                 color_text(
@@ -141,10 +153,10 @@ def ask_companion_type(player_weapon_class: str):
             continue
 
         else:
+            play_async_audio("accept")
             return companion_type_input
 
 
-# Returns Capitalized
 def ask_companion_name():
     while True:
         companion_name_input = input(
@@ -153,6 +165,7 @@ def ask_companion_name():
             )
         ).strip()
         if len(companion_name_input) < 1:  # Entered Nothing
+            play_async_audio("decline")
             reset_screen()
             print(
                 color_text(
@@ -165,11 +178,13 @@ def ask_companion_name():
         elif not companion_name_input.replace(
             " ", ""
         ).isalnum():  # Isn't alphanumeric (allows spaces)
+            play_async_audio("decline")
             reset_screen()
             print(color_text("That is not a real name! Be serious!", "red"))
             add_vertical_spaces(1)
 
         else:
+            play_async_audio("accept")
             return companion_name_input
 
 
@@ -198,6 +213,7 @@ def ask_confirmation(
             .lower()
         )
         if len(confirmation_input) < 1:
+            play_async_audio("decline")
             reset_screen()
             print(
                 color_text(
@@ -209,14 +225,16 @@ def ask_confirmation(
             continue
 
         if confirmation_input not in valid_answers:
+            play_async_audio("decline")
             reset_screen()
             print(color_text("Only a 'Yes' or 'No' will suffice here...", "red"))
             add_vertical_spaces(1)
             continue
 
         elif confirmation_input == "no":
+            play_async_audio("decline")
             return False
 
         else:
+            play_async_audio("accept")
             return True
-

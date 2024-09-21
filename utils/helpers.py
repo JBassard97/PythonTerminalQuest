@@ -1,6 +1,7 @@
 import os
 import sys
 import keyboard
+from assets.sound_effects import play_async_audio
 
 
 # Clears the terminal
@@ -24,6 +25,7 @@ def reset_screen():
 
 
 def graceful_exit():
+    play_async_audio("decline")
     sys.exit()
 
 
@@ -59,9 +61,11 @@ def wait_for_space_or_esc():
         if event.event_type == keyboard.KEY_DOWN:
 
             if pressed_key == "esc":
+                play_async_audio("decline")
                 print(f"{color_text('Exiting...', 'blue')}")
                 sys.exit()  # Leave Game
             elif pressed_key == "space":
+                play_async_audio("accept")
                 return  # Continue Game
 
 
@@ -74,6 +78,7 @@ def press_space_to_continue():
 
         if event.event_type == keyboard.KEY_DOWN:
             if pressed_key == "space":
+                play_async_audio("accept")
                 return
 
 

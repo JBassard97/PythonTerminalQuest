@@ -1,1 +1,1 @@
-player_data = {'name': 'Jonny', 'weapon_class': 'magician', 'color': 'magenta', 'companion_type': 'cat', 'companion_name': 'Targar'}
+player_data = {'name': 'Jonny', 'weapon_class': 'swordsman', 'color': 'blue', 'companion_type': 'wolf', 'companion_name': 'comet'}

@@ -1,6 +1,8 @@
 PROTAGONISTS
-completed => (archer, magician, swordsman falcon, bear, wolf, cat)
+completed => (archer, magician, swordsman, falcon, 
+bear, wolf, cat, owl, dog, crow, flamingo, frog)
+
 
 
 ENEMIES
-completed => (spider)
+completed => (spider, scorpion)

@@ -43,11 +43,12 @@ def start_game():
             )
 
             if continue_confirmation == "start fresh":
+                play_async_audio("decline")
                 clear_player_db()
                 get_player_info()
                 break
             if continue_confirmation == "continue":
-                play_async_audio("success")
+                play_async_audio("accept")
                 begin_adventure()
                 break
             else:
@@ -135,8 +136,8 @@ def begin_adventure():
     tell_story_part_1(player_data)
 
 
-start_game()
+# start_game()
 
 # sprite_test_print()
 
-# print_sprites_side_by_side(["archer", "magician", "swordsman"], "blue")
+# print_sprites_side_by_side(["scorpion", "spider"], "red", ["swordsman", "dog"], "blue")
