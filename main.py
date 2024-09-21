@@ -1,4 +1,5 @@
-from assets.ascii_sprites import sprite_test_print, print_sprites_side_by_side
+from assets.battle_ascii_sprites import sprite_test_print, print_sprites_side_by_side
+from assets.sound_effects import play_async_audio
 from utils.logo import print_logo
 from utils.helpers import (
     clear_terminal,
@@ -18,7 +19,7 @@ from utils.start_questions import (
     ask_confirmation,
 )
 from db.db_functions import save_player_data, reload_player_data, clear_player_db
-from lore.series_1.story_part_1 import tell_story
+from lore.series_1.story_part_1 import tell_story_part_1
 
 
 def start_game():
@@ -46,6 +47,7 @@ def start_game():
                 get_player_info()
                 break
             if continue_confirmation == "continue":
+                play_async_audio("success")
                 begin_adventure()
                 break
             else:
@@ -130,10 +132,11 @@ def get_player_info():
 def begin_adventure():
     reset_screen()
     player_data = reload_player_data()
-    tell_story()
+    tell_story_part_1(player_data)
 
 
 start_game()
+
 # sprite_test_print()
 
 # print_sprites_side_by_side(["archer", "magician", "swordsman"], "blue")

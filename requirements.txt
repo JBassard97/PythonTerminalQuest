@@ -1,0 +1,4 @@
+black==23.12.1
+keyboard==0.13.5
+playsound==1.2.2
+pygame==2.6.0
