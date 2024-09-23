@@ -8,4 +8,18 @@ ENEMIES
 completed => (spider, scorpion)
 
 LARGE
-completed => ()
+completed => (pythonia_castle, sacred_library, evil_king)
+
+ascii characters to hold onto:
+
+★
+╠
+╔
+╗
+╩
+╚
+╝
+╦
+║
+═
+╣
