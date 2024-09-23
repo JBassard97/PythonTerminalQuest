@@ -8,7 +8,8 @@ ENEMIES
 completed => (spider, scorpion)
 
 LARGE
-completed => (pythonia_castle, sacred_library, evil_king)
+completed => (pythonia_castle, sacred_library, evil_king, diamond_of_destiny)
+
 
 ascii characters to hold onto:
 

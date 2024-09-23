@@ -140,10 +140,10 @@ def begin_adventure():
     dialogue_series_1_part_1(player_data)
 
 
-# start_game()
+start_game()
 
 # battle_sprite_test_print()
 # print_single_battle_sprite("spider", "green")
 # print_battle_sprites_side_by_side(["scorpion", "spider"], "red", ["swordsman", "dog"], "blue")
 
-large_sprite_test_print()
+# large_sprite_test_print()
