@@ -1,7 +1,7 @@
 from utils.helpers import color_text
 
 large_sprite_dict = {
-    "evil_king": {
+    "daemon_the_shadow_process": {
         "a": r"                                             ,--,  ,.-.       ",
         "b": r"                ,                  \,       '-,-`,'-.' | ._   ",
         "c": r"               /|          \    ,   |\         }  )/  / `-,', ",
