@@ -1,1 +1,1 @@
-player_data = {'name': 'Gay GUn', 'weapon_class': 'archer', 'color': 'cyan', 'companion_type': 'flamingo', 'companion_name': 'Mingo'}
+player_data = {'name': 'Dragonborn', 'weapon_class': 'swordsman', 'color': 'blue', 'companion_type': 'wolf', 'companion_name': 'Fenris', 'completed_stories': ['intro_story']}

@@ -5,7 +5,29 @@ bear, wolf, cat, owl, dog, crow, flamingo, frog)
 
 
 ENEMIES
-completed => (spider, scorpion)
+completed => (spider, scorpion, phoenix, flower, gryphon)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 LARGE
 completed => (pythonia_castle, sacred_library, evil_king, diamond_of_destiny)

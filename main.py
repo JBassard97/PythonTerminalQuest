@@ -137,12 +137,20 @@ def get_player_info():
 
 def begin_adventure():
     player_data = reload_player_data()
-    dialogue_series_1_part_1(player_data)
+    if "completed_stories" in player_data.keys():
+        print("Intro story already complete, moving on...")
+    else:
+        dialogue_series_1_part_1(player_data)
+        player_data["completed_stories"] = ["intro_story"]
+        save_player_data(player_data)
+        print("Intro story completed for first time")
+
+    print("Back to main.py")
 
 
-start_game()
+# start_game()
 
-# battle_sprite_test_print()
+battle_sprite_test_print()
 # print_single_battle_sprite("spider", "green")
 # print_battle_sprites_side_by_side(["scorpion", "spider"], "red", ["swordsman", "dog"], "blue")
 

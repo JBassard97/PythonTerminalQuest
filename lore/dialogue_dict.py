@@ -118,6 +118,10 @@ dialogue_dict = {
             30: ct("Whoever succeeds in this task and is able to defeat ", "cyan")
             + ct("Deamon the Demon Process ", "red")
             + ct("may take my place as King, and I will gladly retire.", "cyan"),
+            31: ct(
+                "The pair got dressed, filled their bags with anything they thought useful, and set out to begin their adventure...",
+                "cyan",
+            ),
         }
     }
 }

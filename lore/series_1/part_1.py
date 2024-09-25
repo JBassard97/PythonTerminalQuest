@@ -5,6 +5,7 @@ from utils.helpers import (
     add_vertical_spaces,
 )
 from assets.large_ascii_sprites import print_single_large_sprite
+from assets.battle_ascii_sprites import print_battle_sprites_side_by_side
 from lore.dialogue_dict import dialogue_dict
 
 
@@ -86,3 +87,39 @@ def dialogue_series_1_part_1(player_data: dict):
     # --------------------
     reset_screen()
     add_vertical_spaces(2)
+    player_color = player_data["color"]
+    print(
+        color_text("The next morning, a young ", "cyan")
+        + color_text(
+            f'{player_data["weapon_class"]} ',
+            player_color,
+        )
+        + color_text("named ", "cyan")
+        + color_text(f'{player_data["name"]} ', player_color)
+        + color_text(
+            "awoke to a horseman shouting the new decrees throughout the town streets.",
+            "cyan",
+        )
+    )
+    add_vertical_spaces(3)
+    print(
+        color_text(
+            f'"Wakey wakey {player_data["companion_name"]}, it sounds like we have a quest we cannot afford to sleep through this time."',
+            player_color,
+        )
+    )
+    add_vertical_spaces(1)
+    print(
+        color_text(
+            f'The {player_data["companion_type"]} groggily rose out of bed and nodded its head in reluctant agreement.',
+            "cyan",
+        )
+    )
+    add_vertical_spaces(1)
+    print_battle_sprites_side_by_side(
+        [player_data["weapon_class"], player_data["companion_type"]], player_color
+    )
+    add_vertical_spaces(1)
+    print(dialogue_portion[31])
+    add_vertical_spaces(3)
+    press_space_to_continue()
