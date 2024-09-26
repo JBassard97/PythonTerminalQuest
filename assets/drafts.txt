@@ -5,7 +5,8 @@ bear, wolf, cat, owl, dog, crow, flamingo, frog)
 
 
 ENEMIES
-completed => (spider, scorpion, phoenix, flower, gryphon)
+completed => (spider, scorpion, phoenix, flower, 
+gryphon, skeleton, gorilla, deer)
 
 
 
@@ -13,10 +14,9 @@ completed => (spider, scorpion, phoenix, flower, gryphon)
 
 
 
+  
 
-
-
-
+     
 
 
 
