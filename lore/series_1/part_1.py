@@ -97,7 +97,7 @@ def dialogue_series_1_part_1(player_data: dict):
         + color_text("named ", "cyan")
         + color_text(f'{player_data["name"]} ', player_color)
         + color_text(
-            "awoke to a horseman shouting the new decrees throughout the town streets.",
+            "awoke to a horseman shouting the new decrees throughout Pythonia's castle town streets.",
             "cyan",
         )
     )
@@ -123,3 +123,46 @@ def dialogue_series_1_part_1(player_data: dict):
     print(dialogue_portion[31])
     add_vertical_spaces(3)
     press_space_to_continue()
+
+
+# Player_data will be run through this function to add fields after completing intro_story
+# "completed_stories" will be used to measure story progression
+def add_starting_stats(player_data: dict):
+    #! These apply to all weapon_classes
+    player_data["completed_stories"] = ["intro_story"]
+    player_data["item_inventory"] = []
+    player_data["current_funds"] = 100
+    player_data["player_max_health"] = 100
+    player_data["player_current_health"] = 100
+    player_data["player_max_attack"] = 500
+    player_data["player_max_defense"] = 500
+    player_data["player_max_speed"] = 500
+    player_data["companion_max_health"] = 50
+    player_data["companion_current_health"] = 50
+
+    weapon_class = player_data["weapon_class"]
+    if weapon_class == "archer":  #! If Archer...
+        player_data["current_weapon"] = {
+            "name": "Basic Hunter Bow",
+            "attack_boost": 0,
+        }
+        player_data["current_attack"] = 50  # LOW
+        player_data["current_defense"] = 100  # MID
+        player_data["current_speed"] = 150  # HIGH
+    if weapon_class == "swordsman":  #! If Swordsman
+        player_data["current_weapon"] = {
+            "name": "Inherited Blunt Sword",
+            "attack_boost": 0,
+        }
+        player_data["current_attack"] = 100  # MID
+        player_data["current_defense"] = 150  # HIGH (because they have a shield)
+        player_data["current_speed"] = 50  # LOW
+    if weapon_class == "magician":  #! If Magician...
+        player_data["current_weapon"] = {
+            "name": "Lushgrove Tree Branch",
+            "attack_boost": 0,
+        }
+        player_data["current_attack"] = 150  # HIGH
+        player_data["current_defense"] = 50  # LOW
+        player_data["current_speed"] = 100  # SPEED
+    return player_data
