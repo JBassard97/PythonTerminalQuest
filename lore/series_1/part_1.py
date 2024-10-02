@@ -139,6 +139,7 @@ def add_starting_stats(player_data: dict):
     player_data["player_max_speed"] = 500
     player_data["companion_max_health"] = 50
     player_data["companion_current_health"] = 50
+    player_data["battles_completed"] = 0
 
     weapon_class = player_data["weapon_class"]
     if weapon_class == "archer":  #! If Archer...
