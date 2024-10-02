@@ -1,9 +1,10 @@
-from assets.battle_ascii_sprites import (
-    battle_sprite_test_print,
-    print_single_battle_sprite,
-    print_battle_sprites_side_by_side,
-)
-from assets.large_ascii_sprites import large_sprite_test_print
+# from assets.battle_ascii_sprites import (
+#     battle_sprite_test_print,
+#     print_single_battle_sprite,
+#     print_battle_sprites_side_by_side,
+# )
+# from assets.large_ascii_sprites import large_sprite_test_print
+from dev.dev_funcs import dev_options
 from assets.sound_effects import play_async_audio
 from utils.logo import print_logo
 from utils.helpers import (
@@ -14,7 +15,6 @@ from utils.helpers import (
     reset_screen,
     convert_to_dict,
     graceful_exit,
-    print_dict_items
 )
 from utils.start_questions import (
     ask_name,
@@ -24,6 +24,7 @@ from utils.start_questions import (
     ask_companion_name,
     ask_confirmation,
 )
+from utils.battles import start_random_battle
 from db.db_functions import save_player_data, reload_player_data, clear_player_db
 from lore.series_1.part_1 import dialogue_series_1_part_1, add_starting_stats
 
@@ -57,6 +58,10 @@ def start_game():
                 play_async_audio("accept")
                 begin_adventure()
                 break
+            if continue_confirmation == "dev":
+                reset_screen()
+                dev_options(player_data)
+                add_vertical_spaces(1)
             else:
                 reset_screen()
                 continue
@@ -138,10 +143,11 @@ def get_player_info():
 
 def begin_adventure():
     player_data = reload_player_data()
+
     if "completed_stories" in player_data.keys():  # If Intro Story Complete...
         if "intro_story" in player_data["completed_stories"]:
-            print("Intro story already complete")
-            print_dict_items(player_data)
+            start_random_battle(player_data)
+
     else:  # Start Intro Story
         dialogue_series_1_part_1(player_data)
         # Start a list of completed story parts
@@ -154,8 +160,10 @@ def begin_adventure():
 
 start_game()
 
+# start_random_battle(reload_player_data())
+
+# ? sprite test print funcs
 # battle_sprite_test_print()
 # print_single_battle_sprite("spider", "green")
 # print_battle_sprites_side_by_side(["scorpion", "spider"], "red", ["swordsman", "dog"], "blue")
-
 # large_sprite_test_print()

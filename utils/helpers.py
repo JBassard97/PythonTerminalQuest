@@ -98,7 +98,3 @@ def convert_to_dict(
     }
 
     return player_save
-
-def print_dict_items(dict: dict):
-    for item in dict.items():
-        print(item)

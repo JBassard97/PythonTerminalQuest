@@ -1,6 +1,12 @@
 enemy_data = {
     "tutorial": {
-        "spider": {"sprite_name": "spider", "display_name": "Unwelcome Spider"},
+        "spider": {
+            "sprite_name": "spider",
+            "display_name": "Unwelcome Spider",
+            "attack": 50,
+            "defense": 50,
+            "speed": 50,
+        },
     },
     "ember_mountain": {
         "phoenix": {"sprite_name": "phoenix", "display_name": "Re-Alived Firebird"},

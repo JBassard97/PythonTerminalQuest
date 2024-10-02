@@ -139,6 +139,7 @@ def add_starting_stats(player_data: dict):
     player_data["player_max_speed"] = 500
     player_data["companion_max_health"] = 50
     player_data["companion_current_health"] = 50
+    player_data["is_companion_alive"] = True
     player_data["battles_completed"] = 0
 
     weapon_class = player_data["weapon_class"]
@@ -166,4 +167,6 @@ def add_starting_stats(player_data: dict):
         player_data["current_attack"] = 150  # HIGH
         player_data["current_defense"] = 50  # LOW
         player_data["current_speed"] = 100  # SPEED
+
+    player_data["current_realm"] = "tutorial"
     return player_data
