@@ -59,9 +59,7 @@ def start_game():
                 begin_adventure()
                 break
             if continue_confirmation == "dev":
-                reset_screen()
                 dev_options(player_data)
-                add_vertical_spaces(1)
             else:
                 reset_screen()
                 continue
@@ -155,7 +153,7 @@ def begin_adventure():
         # print_dict_items(player_data)
         save_player_data(player_data)
 
-    print("Back to main.py")
+    return
 
 
 start_game()

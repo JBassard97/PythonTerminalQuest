@@ -131,22 +131,32 @@ def add_starting_stats(player_data: dict):
     #! These apply to all weapon_classes
     player_data["completed_stories"] = ["intro_story"]
     player_data["item_inventory"] = []
+    player_data["battles_completed"] = 0
     player_data["current_funds"] = 100
+    player_data["diamond_shards_obtained"] = 0
+
     player_data["player_max_health"] = 100
     player_data["player_current_health"] = 100
     player_data["player_max_attack"] = 500
     player_data["player_max_defense"] = 500
     player_data["player_max_speed"] = 500
-    player_data["companion_max_health"] = 50
-    player_data["companion_current_health"] = 50
-    player_data["is_companion_alive"] = True
-    player_data["battles_completed"] = 0
 
+    player_data["companion_max_health"] = 50
+    player_data["companion_max_attack"] = 300
+    player_data["companion_max_defense"] = 300
+    player_data["companion_max_speed"] = 300
+    player_data["companion_current_health"] = 50
+    player_data["companion_current_attack"] = 50
+    player_data["companion_current_defense"] = 50
+    player_data["companion_current_speed"] = 50
+    player_data["is_companion_alive"] = True
+
+    #! "attack_boost" is a multiplier, NOT an addition
     weapon_class = player_data["weapon_class"]
     if weapon_class == "archer":  #! If Archer...
         player_data["current_weapon"] = {
             "name": "Basic Hunter Bow",
-            "attack_boost": 0,
+            "attack_boost": 1,
         }
         player_data["current_attack"] = 50  # LOW
         player_data["current_defense"] = 100  # MID
@@ -154,7 +164,7 @@ def add_starting_stats(player_data: dict):
     if weapon_class == "swordsman":  #! If Swordsman
         player_data["current_weapon"] = {
             "name": "Inherited Blunt Sword",
-            "attack_boost": 0,
+            "attack_boost": 1,
         }
         player_data["current_attack"] = 100  # MID
         player_data["current_defense"] = 150  # HIGH (because they have a shield)
@@ -162,7 +172,7 @@ def add_starting_stats(player_data: dict):
     if weapon_class == "magician":  #! If Magician...
         player_data["current_weapon"] = {
             "name": "Lushgrove Tree Branch",
-            "attack_boost": 0,
+            "attack_boost": 1,
         }
         player_data["current_attack"] = 150  # HIGH
         player_data["current_defense"] = 50  # LOW
