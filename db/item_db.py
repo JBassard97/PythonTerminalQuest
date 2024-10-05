@@ -27,5 +27,14 @@ item_data = {
         },
     },
     "buff_items": {},
-    "battle_items": {},
+    "battle_items": {
+        "throwing knife": {
+            "category": "battle_items",
+            "description": "An aerodynamic blade use to inflict quick damage",
+            "damage_value": 20,
+            "base_price": 20,
+            "resell_price": 15,
+            "number_of_uses": 1,
+        }
+    },
 }
