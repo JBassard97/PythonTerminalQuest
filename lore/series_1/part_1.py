@@ -130,7 +130,8 @@ def dialogue_series_1_part_1(player_data: dict):
 def add_starting_stats(player_data: dict):
     #! These apply to all weapon_classes
     player_data["completed_stories"] = ["intro_story"]
-    player_data["item_inventory"] = []
+    player_data["item_inventory"] = ["potion", "potion", "potion"]
+    player_data["item_inventory_capacity"] = 10
     player_data["battles_completed"] = 0
     player_data["current_funds"] = 100
     player_data["diamond_shards_obtained"] = 0

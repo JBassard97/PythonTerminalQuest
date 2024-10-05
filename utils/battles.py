@@ -1,4 +1,5 @@
 from db.enemy_db import enemy_data
+from db.item_db import item_data
 from utils.helpers import (
     reset_screen,
     add_vertical_spaces,
@@ -103,7 +104,7 @@ def start_random_battle(player_data: dict):
 
         display_battle(enemy_string, protag_string, player_data, enemies_to_fight)
 
-        print(f'{color_text("Who will you attack?", "cyan")}')
+        print(f'{color_text("          Who will you attack?", "cyan")}')
         add_vertical_spaces(1)
         if enemies_to_fight[0] == enemies_to_fight[1]:
             print(
@@ -128,7 +129,42 @@ def start_random_battle(player_data: dict):
             target_choice = input()
             if target_choice in valid_target_choices:
                 return target_choice
-            
+
+    def ask_which_item(player_data: dict):
+        display_battle(enemy_string, protag_string, player_data, enemies_to_fight)
+        for item in player_data["item_inventory"]:
+            if item in item_data["heal_items"]:
+                print(
+                    f'{color_text(item, "green")} => {color_text(item_data["heal_items"][item]["description"], "green")}'
+                )
+            elif item in item_data["quest_items"]:
+                print(
+                    f'{color_text(item, "magenta")} => {color_text(item_data["quest_items"][item]["description"], "magenta")}'
+                )
+            elif item in item_data["buff_items"]:
+                print(
+                    f'{color_text(item, "blue")} => {color_text(item_data["buff_items"][item]["description"], "blue")}'
+                )
+            elif item in item_data["battle_items"]:
+                print(
+                    f'{color_text(item, "red")} => {color_text(item_data["battle_items"][item]["description"], "blue")}'
+                )
+
+        valid_item_choices = player_data["item_inventory"]
+        add_vertical_spaces(1)
+        print(
+            color_text(
+                "Which item will you use? (enter 'Back' to change your mind)",
+                "cyan",
+            )
+        )
+        while True:
+            item_choice = input("     ").strip().lower()
+            if item_choice == "back":
+                return "back"
+            elif item_choice in valid_item_choices:
+                return item_choice
+
     def ask_companion_choice(player_data: dict):
         display_battle(enemy_string, protag_string, player_data, enemies_to_fight)
 
@@ -146,46 +182,52 @@ def start_random_battle(player_data: dict):
                 return companion_choice
 
     def ask_battle_questions(enemies_to_fight: list, player_data: dict):
-        display_battle(enemy_string, protag_string, player_data, enemies_to_fight)
+        while True:
+            display_battle(enemy_string, protag_string, player_data, enemies_to_fight)
 
-        player_choice = ask_player_choice()
-        if player_choice == "attack":
-            if len(enemies_to_fight) == 2:
-                display_battle(
-                    enemy_string, protag_string, player_data, enemies_to_fight
-                )
-                player_attack_target = ask_attack_who(enemies_to_fight, player_data)
+            # Reset previous choices before asking again
+            player_attack_target = None
+            item_choice = None
+
+            player_choice = ask_player_choice()
+
+            if player_choice == "attack":
+                if len(enemies_to_fight) == 2:
+                    player_attack_target = ask_attack_who(enemies_to_fight, player_data)
+                else:
+                    player_attack_target = enemies_to_fight[0]
+
+            elif player_choice == "defend":
+                # Defend logic placeholder
+                pass
+
+            elif player_choice == "use item":
+                item_choice = ask_which_item(player_data)
+
+                # If player chose to go back, restart question loop
+                if item_choice == "back":
+                    continue
+
+            elif player_choice == "run away":
+                return  # Handle run away logic
+
+            # Companion move (if companion is alive)
+            if player_data["is_companion_alive"]:
+                companion_choice = ask_companion_choice(player_data)
             else:
-                display_battle(
-                    enemy_string, protag_string, player_data, enemies_to_fight
-                )
-                player_attack_target = enemies_to_fight[0]
+                companion_choice = None
 
-        elif player_choice == "defend":
-            player_attack_target = None
-            display_battle(enemy_string, protag_string, player_data, enemies_to_fight)
-            # TODO: That's it for now for "defend", will handle the logic later
-
-        elif player_choice == "use item":
-            player_attack_target = None
-            display_battle(enemy_string, protag_string, player_data, enemies_to_fight)
-            # TODO: handle further item selection later
-
-        elif player_choice == "run away":
-            return
-
-        #! If your companion is alive, give them a chance to move
-        if player_data["is_companion_alive"]:
-            companion_choice = ask_companion_choice(player_data)
-        else:
-            companion_choice = None
-
-        battle_play_by_play(player_choice, companion_choice, player_attack_target)
+            # Proceed to battle actions
+            battle_play_by_play(
+                player_choice, companion_choice, player_attack_target, item_choice
+            )
+            break  # Exit after resolving actions
 
     def battle_play_by_play(
         player_choice: str,
-        companion_choice: str = None,
-        player_attack_target: str = None,
+        companion_choice: str = None,  # ? If None, companion is dead
+        player_attack_target: str = None,  # ? If None, player isn't attacking
+        item_choice: str = None,  # ? If None, player isn't using an item
     ):
         #! Handle player_choice
         print("you will " + player_choice)
@@ -195,6 +237,9 @@ def start_random_battle(player_data: dict):
         #! Handle player_attack_target
         if player_attack_target is not None:
             print("your attack targets " + player_attack_target)
+        #! Handle item_choice
+        if item_choice is not None:
+            print("you will use " + item_choice)
 
     ask_battle_questions(enemies_to_fight, player_data)
 
