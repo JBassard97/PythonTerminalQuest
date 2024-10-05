@@ -32,7 +32,7 @@ def start_random_battle(player_data: dict):
 
     # List of possible enemies for the realm the player is in
     enemy_possibilities = list(enemy_data[player_data["current_realm"]])
-    enemies_to_fight = []
+    enemies_to_fight: list = []
     for i in range(random_enemy_count()):
         enemies_to_fight.append(random.choice(enemy_possibilities))
 
@@ -48,7 +48,7 @@ def start_random_battle(player_data: dict):
         enemy_string = f"          {enemy_data[player_data['current_realm']][enemies_to_fight[0]]['display_name']}"
 
     #! Creating protagonist list (omitting companion if dead)
-    protags_to_fight = [player_data["weapon_class"]]
+    protags_to_fight: list[str] = [player_data["weapon_class"]]
     if player_data["is_companion_alive"]:
         protags_to_fight.append(player_data["companion_type"])
 
@@ -126,7 +126,7 @@ def start_random_battle(player_data: dict):
 
         add_vertical_spaces(1)
         while True:
-            target_choice = input()
+            target_choice = input().strip().lower()
             if target_choice in valid_target_choices:
                 return target_choice
 
@@ -138,16 +138,14 @@ def start_random_battle(player_data: dict):
                     f'{color_text(item, "green")} => {color_text(item_data["heal_items"][item]["description"], "green")}'
                 )
             elif item in item_data["quest_items"]:
-                print(
-                    f'{color_text(item, "magenta")} => {color_text(item_data["quest_items"][item]["description"], "magenta")}'
-                )
+                pass  # ? Quest items not intended for battle use
             elif item in item_data["buff_items"]:
                 print(
                     f'{color_text(item, "blue")} => {color_text(item_data["buff_items"][item]["description"], "blue")}'
                 )
             elif item in item_data["battle_items"]:
                 print(
-                    f'{color_text(item, "red")} => {color_text(item_data["battle_items"][item]["description"], "blue")}'
+                    f'{color_text(item, "red")} => {color_text(item_data["battle_items"][item]["description"], "red")}'
                 )
 
         valid_item_choices = player_data["item_inventory"]
@@ -164,6 +162,64 @@ def start_random_battle(player_data: dict):
                 return "back"
             elif item_choice in valid_item_choices:
                 return item_choice
+
+    def ask_use_item_on_who(
+        item_choice: str,
+        enemies_to_fight: list[str],
+        player_data: dict,
+    ):
+        display_battle(enemy_string, protag_string, player_data, enemies_to_fight)
+
+        if item_choice in item_data["heal_items"]:
+            print(
+                f'{color_text(item_choice, "green")} => {color_text(item_data["heal_items"][item_choice]["description"], "green")}'
+            )
+        elif item_choice in item_data["buff_items"]:
+            print(
+                f'{color_text(item_choice, "blue")} => {color_text(item_data["buff_items"][item_choice]["description"], "blue")}'
+            )
+        elif item_choice in item_data["battle_items"]:
+            print(
+                f'{color_text(item_choice, "red")} => {color_text(item_data["battle_items"][item_choice]["description"], "red")}'
+            )
+        add_vertical_spaces(1)
+        print(color_text("Who will you use the " + item_choice + " on?", "cyan"))
+
+        if item_choice in item_data["heal_items"] or item_data["buff_items"]:
+            print(
+                f'{color_text(player_data["name"], player_data["color"])} {color_text("or", "yellow")} {color_text(player_data["companion_name"] + "?", player_data["color"])}'
+            )
+            add_vertical_spaces(1)
+            formal_protags_to_fight: list[str] = [
+                player_data["name"],
+                player_data["companion_name"],
+            ]
+            valid_item_targets = [item.lower() for item in formal_protags_to_fight]
+            while True:
+                item_target_choice = input().strip().lower()
+                if item_target_choice in valid_item_targets:
+                    if item_target_choice == valid_item_targets[0]:
+                        return player_data["name"]
+                    else:
+                        return player_data["companion_name"]
+        elif item_choice in item_data["battle_items"]:
+            if enemies_to_fight[0] == enemies_to_fight[1]:
+                print(
+                    f'{color_text(enemy_data[player_data["current_realm"]][enemies_to_fight[0]]["display_name"] + "A", "red")} {color_text("or", "yellow")} {color_text("B?", "red")}'
+                )
+                print(color_text("Enter: A or B", "yellow"))
+                valid_item_targets = ["a", "b"]
+            else:
+                print(
+                    f'{color_text(f"{enemies_to_fight[0]}", "red")} {color_text("or", "yellow")} {color_text(f"{enemies_to_fight[1]}?", "red")}'
+                )
+                valid_item_targets = [item.lower() for item in enemies_to_fight]
+
+            add_vertical_spaces(1)
+            while True:
+                item_target_choice = input().strip().lower()
+                if item_target_choice in valid_item_targets:
+                    return item_target_choice
 
     def ask_companion_choice(player_data: dict):
         display_battle(enemy_string, protag_string, player_data, enemies_to_fight)
@@ -188,6 +244,7 @@ def start_random_battle(player_data: dict):
             # Reset previous choices before asking again
             player_attack_target = None
             item_choice = None
+            item_target_choice = None
 
             player_choice = ask_player_choice()
 
@@ -208,8 +265,27 @@ def start_random_battle(player_data: dict):
                 if item_choice == "back":
                     continue
 
+                if item_choice in item_data["heal_items"] or ["buff_items"]:
+                    if len(protags_to_fight) == 2:
+                        item_target_choice = ask_use_item_on_who(
+                            item_choice, enemies_to_fight, player_data
+                        )
+                    else:
+                        item_target_choice = player_data["name"]
+
+                if item_choice in item_data["battle_items"]:
+                    if len(enemies_to_fight) == 2:
+                        item_target_choice = ask_use_item_on_who(
+                            item_choice, enemies_to_fight, player_data
+                        )
+                    else:
+                        item_target_choice = enemy_data[player_data["current_realm"]][
+                            enemies_to_fight[0]
+                        ]["display_name"]
+
             elif player_choice == "run away":
-                return  # Handle run away logic
+                # Run Away logic placeholder
+                pass
 
             # Companion move (if companion is alive)
             if player_data["is_companion_alive"]:
@@ -219,7 +295,11 @@ def start_random_battle(player_data: dict):
 
             # Proceed to battle actions
             battle_play_by_play(
-                player_choice, companion_choice, player_attack_target, item_choice
+                player_choice,
+                companion_choice,
+                player_attack_target,
+                item_choice,
+                item_target_choice,
             )
             break  # Exit after resolving actions
 
@@ -228,7 +308,10 @@ def start_random_battle(player_data: dict):
         companion_choice: str = None,  # ? If None, companion is dead
         player_attack_target: str = None,  # ? If None, player isn't attacking
         item_choice: str = None,  # ? If None, player isn't using an item
+        item_target_choice: str = None,  # ? If None, item target is implied or isn't using an item
     ):
+        display_battle(enemy_string, protag_string, player_data, enemies_to_fight)
+
         #! Handle player_choice
         print("you will " + player_choice)
         #! Handle companion_choice
@@ -240,6 +323,9 @@ def start_random_battle(player_data: dict):
         #! Handle item_choice
         if item_choice is not None:
             print("you will use " + item_choice)
+        #! Handle item_target_choice
+        if item_target_choice is not None:
+            print(item_choice + " will be used on " + item_target_choice)
 
     ask_battle_questions(enemies_to_fight, player_data)
 
