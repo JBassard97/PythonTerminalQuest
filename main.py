@@ -24,7 +24,7 @@ from utils.start_questions import (
     ask_companion_name,
     ask_confirmation,
 )
-from utils.battles import start_random_battle
+from utils.battles.battles import start_random_battle
 from db.db_functions import save_player_data, reload_player_data, clear_player_db
 from lore.series_1.part_1 import dialogue_series_1_part_1, add_starting_stats
 
@@ -116,22 +116,18 @@ def get_player_info():
         print(color_text("So here is what you've told me thus far...", "yellow"))
         add_vertical_spaces(1)
 
-        acceptance_of_fate: bool = ask_confirmation(
+        final_answers_list: list[str] = [
             player_name,
             player_weapon_class,
             player_color,
             player_companion_type,
             player_companion_name,
-        )
+        ]
+
+        acceptance_of_fate: bool = ask_confirmation(*final_answers_list)
 
         if acceptance_of_fate:  # If they confirm the details...
-            player_save = convert_to_dict(
-                player_name,
-                player_weapon_class,
-                player_color,
-                player_companion_type,
-                player_companion_name,
-            )
+            player_save = convert_to_dict(*final_answers_list)
             save_player_data(player_save)
             begin_adventure()
             break

@@ -169,7 +169,7 @@ def add_starting_stats(player_data: dict):
         }
         player_data["current_attack"] = 100  # MID
         player_data["current_defense"] = 150  # HIGH (because they have a shield)
-        player_data["current_speed"] = 50  # LOW
+        player_data["current_speed"] = 50  # LOW (because the shield is heavy)
     if weapon_class == "magician":  #! If Magician...
         player_data["current_weapon"] = {
             "name": "Lushgrove Tree Branch",

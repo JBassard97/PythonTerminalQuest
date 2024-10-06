@@ -1,7 +1,7 @@
 from db.enemy_db import enemy_data
 from db.item_db import item_data
 
-from utils.battle_helpers import (
+from utils.battles.battle_helpers import (
     ask_player_choice,
     ask_attack_who,
     ask_which_item,
@@ -109,6 +109,8 @@ def start_random_battle(player_data: dict):
 
             # Proceed to battle actions
             battle_play_by_play(
+                player_data,
+                enemies_to_fight,
                 player_choice,
                 companion_choice,
                 player_attack_target,

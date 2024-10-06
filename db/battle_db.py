@@ -1,0 +1,1 @@
+battle_data = [{'sprite_name': 'spider', 'display_name': 'Unwelcome Spider', 'health': 20, 'attack': 50, 'defense': 50, 'speed': 50}, {'sprite_name': 'spider', 'display_name': 'Unwelcome Spider', 'health': 20, 'attack': 50, 'defense': 50, 'speed': 50}]

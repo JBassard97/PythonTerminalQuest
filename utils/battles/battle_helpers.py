@@ -1,5 +1,6 @@
 from assets.battle_ascii_sprites import print_battle_sprites_side_by_side
 from utils.helpers import color_text, reset_screen, add_vertical_spaces
+from db.db_functions import save_battle_data, reload_battle_data
 from db.enemy_db import enemy_data
 from db.item_db import item_data
 import random
@@ -241,10 +242,27 @@ def ask_companion_choice(player_data: dict):
         if companion_choice in valid_companion_choices:
             return companion_choice
 
-    #! ---------- BEGIN BATTLE LOGIC -------------------------
+
+#! ---------- BEGIN BATTLE LOGIC -------------------------
+
+
+def create_enemies_battle_stats(player_data: dict, enemies_to_fight: list[str]):
+    enemy_battle_stats = []
+
+    for enemy in enemies_to_fight:
+        enemy = enemy_data[player_data["current_realm"]][enemy]
+        enemy_battle_stats.append(enemy)
+
+    return enemy_battle_stats
+
+
+def create_battle_move_order(player_data: dict, enemy_stats: list[dict]):
+    pass
 
 
 def battle_play_by_play(
+    player_data: dict,
+    enemies_to_fight: list[str],
     player_choice: str,
     companion_choice: str = None,  # ? If None, companion is dead
     player_attack_target: str = None,  # ? If None, player isn't attacking
@@ -268,3 +286,8 @@ def battle_play_by_play(
     #! Handle item_target_choice
     if item_target_choice is not None:
         print(item_choice + " will be used on " + item_target_choice)
+
+    save_battle_data(create_enemies_battle_stats(player_data, enemies_to_fight))
+    enemy_stats = reload_battle_data()
+
+    print(enemy_stats)
