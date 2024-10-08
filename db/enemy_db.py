@@ -14,10 +14,22 @@ enemy_data = {
         "devil": {"sprite_name": "devil", "devil_name": "Devil-ling"},
     },
     "lushgrove": {
-        "flower": {"sprite_name": "flower", "display_name": "Maneating Flower"},
-        "gryphon": {"sprite_name": "gryphon", "display_name": "Territorial Gryphon"},
-        "gorilla": {"sprite_name": "gorilla", "display_name": "Shredded Gorilla"},
-        "deer": {"sprite_name": "deer", "display_name": "Hormonal Deer"},
+        "flower": {
+            "sprite_name": "flower",
+            "display_name": "Maneating Flower",
+            "speed": 30,
+        },
+        "gryphon": {
+            "sprite_name": "gryphon",
+            "display_name": "Territorial Gryphon",
+            "speed": 60,
+        },
+        "gorilla": {
+            "sprite_name": "gorilla",
+            "display_name": "Shredded Gorilla",
+            "speed": 45,
+        },
+        "deer": {"sprite_name": "deer", "display_name": "Hormonal Deer", "speed": 75},
     },
     "cinderdune": {
         "scorpion": {"sprite_name": "scorpion", "display_name": "Venemous Scorpion"},

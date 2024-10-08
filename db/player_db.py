@@ -28,5 +28,5 @@ player_data = {
     "current_attack": 100,
     "current_defense": 150,
     "current_speed": 50,
-    "current_realm": "tutorial",
+    "current_realm": "lushgrove",
 }

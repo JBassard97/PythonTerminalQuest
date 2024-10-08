@@ -1,6 +1,16 @@
 from assets.battle_ascii_sprites import print_battle_sprites_side_by_side
-from utils.helpers import color_text, reset_screen, add_vertical_spaces
-from db.db_functions import save_battle_data, reload_battle_data
+from utils.helpers import (
+    color_text,
+    reset_screen,
+    add_vertical_spaces,
+    press_space_to_continue,
+)
+from db.db_functions import (
+    save_battle_data,
+    reload_battle_data,
+    save_player_data,
+    reload_player_data,
+)
 from db.enemy_db import enemy_data
 from db.item_db import item_data
 import random
@@ -19,15 +29,41 @@ def create_enemies_to_fight(enemy_possibilities: list):
     return enemies_to_fight
 
 
+def random_enemy_move():
+    move_possibilities = ["attack", "defend"]
+    return random.choice(move_possibilities)
+
+
+def random_enemy_attack_target(player_data: dict):
+    target_possibilities = [player_data["name"]]
+    if player_data["is_companion_alive"]:
+        target_possibilities.append(player_data["companion_name"])
+    return random.choice(target_possibilities)
+
+
+def random_companion_attack_target(player_data: dict, enemy_stats: list[dict]):
+    if enemy_stats[0] == enemy_stats[1]:
+        target_possibilities = ["a", "b"]
+        return random.choice(target_possibilities)
+    else:
+        target_possibilities = enemy_stats
+        return random.choice(target_possibilities)["display_name"]
+
+
+def move_index_to_word(index: int):
+    dict = {1: "first", 2: "second", 3: "third", 4: "fourth"}
+    return dict[index + 1]  # + 1 because index starts at 0
+
+
 #! Creating enemy description string
 def create_enemy_string(enemies_to_fight: list[str], player_data: dict):
     enemy_string = ""
     if len(enemies_to_fight) == 2:  # If there are 2 enemies...
         if enemies_to_fight[0] == enemies_to_fight[1]:  # And they're the same enemy...
             duplicate_enemy = enemies_to_fight[0]
-            enemy_string = f"                                2 {enemy_data[player_data['current_realm']][duplicate_enemy]['display_name']}s"
+            enemy_string = f"                           2 {enemy_data[player_data['current_realm']][duplicate_enemy]['display_name']}s"
         else:  # 2 enemies and they're different...
-            enemy_string = f"                                  {enemy_data[player_data['current_realm']][enemies_to_fight[0]]['display_name']} and {enemy_data[player_data['current_realm']][enemies_to_fight[1]]['display_name']}"
+            enemy_string = f"                             {enemy_data[player_data['current_realm']][enemies_to_fight[0]]['display_name']} and {enemy_data[player_data['current_realm']][enemies_to_fight[1]]['display_name']}"
     else:  # There's just one enemy...
         enemy_string = f"          {enemy_data[player_data['current_realm']][enemies_to_fight[0]]['display_name']}"
 
@@ -89,7 +125,12 @@ def display_battle(
 def ask_player_choice():
     player_options = f'{color_text("- Attack -", "red")} {color_text("- Defend -", "blue")} {color_text("- Use Item -", "green")} {color_text("- Run Away -", "yellow")}'
 
-    valid_player_choices = ["attack", "defend", "use item", "run away"]
+    valid_player_choices = [
+        "attack",
+        "defend",
+        "use item",
+        "run away",
+    ]
     print(player_options)
     print(color_text("               What will you do?", "cyan"))
 
@@ -128,7 +169,12 @@ def ask_attack_who(enemies_to_fight: list, player_data: dict):
     while True:
         target_choice = input().strip().lower()
         if target_choice in valid_target_choices:
-            return target_choice
+            if enemies_to_fight[0] == enemies_to_fight[1]:
+                return target_choice
+            elif target_choice == valid_target_choices[0]:
+                return first_enemy_display_name
+            elif target_choice == valid_target_choices[1]:
+                return second_enemy_display_name
 
 
 def ask_which_item(player_data: dict):
@@ -243,6 +289,84 @@ def ask_companion_choice(player_data: dict):
             return companion_choice
 
 
+def ask_battle_questions(
+    enemies_to_fight: list, player_data: dict, display_battle_params
+):
+    while True:
+        display_battle(*display_battle_params)
+        # Reset previous choices before asking again
+        player_attack_target = None
+        item_choice = None
+        item_target_choice = None
+        companion_choice = None
+        player_choice = ask_player_choice()
+
+        if player_choice == "run away":
+            return "ran away"
+
+        if player_choice == "attack":
+            if len(enemies_to_fight) == 2:
+                display_battle(*display_battle_params)
+                player_attack_target = ask_attack_who(enemies_to_fight, player_data)
+            else:
+                player_attack_target = enemy_data[player_data["current_realm"]][
+                    enemies_to_fight[0]
+                ]["display_name"]
+        elif player_choice == "defend":
+            # Defend question placeholder
+            pass
+        elif player_choice == "use item":
+            display_battle(*display_battle_params)
+            item_choice = ask_which_item(player_data)
+            # If player chose to go back, restart question loop
+            if item_choice == "back":
+                continue
+            if (
+                item_choice in item_data["heal_items"]
+                or item_choice in item_data["buff_items"]
+            ):
+                if player_data["is_companion_alive"]:
+                    display_battle(*display_battle_params)
+                    item_target_choice = ask_use_item_on_who(
+                        item_choice, enemies_to_fight, player_data
+                    )
+                else:
+                    item_target_choice = player_data["name"]
+            if item_choice in item_data["battle_items"]:
+                if len(enemies_to_fight) == 2:
+                    display_battle(*display_battle_params)
+                    item_target_choice = ask_use_item_on_who(
+                        item_choice, enemies_to_fight, player_data
+                    )
+                else:
+                    item_target_choice = enemy_data[player_data["current_realm"]][
+                        enemies_to_fight[0]
+                    ]["display_name"]
+        # Companion move (if companion is alive)
+        if player_data["is_companion_alive"]:
+            display_battle(*display_battle_params)
+            companion_choice = ask_companion_choice(player_data)
+        break
+
+    display_battle(*display_battle_params)
+    # Proceed to battle actions
+
+    battle_outcome = battle_play_by_play(
+        player_data,
+        enemies_to_fight,
+        display_battle_params,  # ? Gets passed in so that they can be used in ask_battle_questions again
+        player_choice,
+        companion_choice,
+        player_attack_target,
+        item_choice,
+        item_target_choice,
+    )
+    # if battle_outcome == "ran away" or battle_outcome is None:
+    #     return "ran away"  # Exit on "ran away"
+    if battle_outcome:
+        return battle_outcome
+
+
 #! ---------- BEGIN BATTLE LOGIC -------------------------
 
 
@@ -256,13 +380,29 @@ def create_enemies_battle_stats(player_data: dict, enemies_to_fight: list[str]):
     return enemy_battle_stats
 
 
+# ? Sorts all_fighters by "speed" stat
 def create_battle_move_order(player_data: dict, enemy_stats: list[dict]):
-    pass
+    all_fighters = [
+        {"player_name": player_data["name"], "speed": player_data["current_speed"]}
+    ]
+    if player_data["is_companion_alive"]:
+        all_fighters.append(
+            {
+                "companion_name": player_data["companion_name"],
+                "speed": player_data["companion_current_speed"],
+            }
+        )
+    for enemy in enemy_stats:
+        all_fighters.append(enemy)
+
+    move_order = sorted(all_fighters, key=lambda x: x["speed"], reverse=True)
+    return move_order
 
 
 def battle_play_by_play(
     player_data: dict,
     enemies_to_fight: list[str],
+    display_battle_params,
     player_choice: str,
     companion_choice: str = None,  # ? If None, companion is dead
     player_attack_target: str = None,  # ? If None, player isn't attacking
@@ -270,24 +410,176 @@ def battle_play_by_play(
     item_target_choice: str = None,  # ? If None, item target is implied or isn't using an item
 ):
 
-    #! Handle player_choice
-    print("you will " + player_choice)
-    #! Handle companion_choice
-    if companion_choice is not None:
-        print("your companion will " + companion_choice)
-    else:
-        print("your companion is dead, RIP")
-    #! Handle player_attack_target
-    if player_attack_target is not None:
-        print("your attack targets " + player_attack_target)
-    #! Handle item_choice
-    if item_choice is not None:
-        print("you will use " + item_choice)
-    #! Handle item_target_choice
-    if item_target_choice is not None:
-        print(item_choice + " will be used on " + item_target_choice)
-
     save_battle_data(create_enemies_battle_stats(player_data, enemies_to_fight))
-    enemy_stats = reload_battle_data()
 
-    print(enemy_stats)
+    enemy_stats = reload_battle_data()
+    player_data = reload_player_data()
+    move_order = create_battle_move_order(player_data, enemy_stats)
+    same_enemy_index = (
+        0  # If 2 similar enemies, this keeps track of which is moving first
+    )
+
+    for index, move in enumerate(move_order):  # Loop through move_order
+        if "player_name" in move.keys():  # If it's the player...
+            if player_choice == "run away":
+                return "ran away"
+            if player_choice == "attack":
+                if (
+                    player_attack_target == "a" or player_attack_target == "b"
+                ):  # If player attacks one of the two same named enemy
+                    print(
+                        color_text(
+                            player_data["name"]
+                            + " attacks "
+                            + enemy_stats[0]["display_name"]
+                            + " "
+                            + player_attack_target.capitalize()
+                            + " "
+                            + move_index_to_word(index),
+                            player_data["color"],
+                        )
+                    )
+                    press_space_to_continue()
+                    add_vertical_spaces(1)
+                else:  # If player attacks one enemy or a unique named enemy
+                    print(
+                        color_text(
+                            player_data["name"]
+                            + " attacks "
+                            + player_attack_target
+                            + " "
+                            + move_index_to_word(index),
+                            player_data["color"],
+                        )
+                    )
+                    press_space_to_continue()
+                    add_vertical_spaces(1)
+            if player_choice == "defend":
+                print(
+                    color_text(
+                        player_data["name"] + " defends " + move_index_to_word(index),
+                        player_data["color"],
+                    )
+                )
+                press_space_to_continue()
+                add_vertical_spaces(1)
+            if player_choice == "use item":
+                return "used item"
+
+        if "companion_name" in move.keys():  # If it's the companion...
+            if companion_choice == "attack":
+                companion_attack_target = random_companion_attack_target(
+                    player_data, enemy_stats
+                )
+                if companion_attack_target == "a" or companion_attack_target == "b":
+                    print(
+                        color_text(
+                            player_data["companion_name"]
+                            + " attacks "
+                            + enemy_stats[0]["display_name"]
+                            + " "
+                            + companion_attack_target.capitalize()
+                            + " "
+                            + move_index_to_word(index),
+                            player_data["color"],
+                        )
+                    )
+                    press_space_to_continue()
+                    add_vertical_spaces(1)
+                else:
+                    print(
+                        color_text(
+                            player_data["companion_name"]
+                            + " attacks "
+                            + companion_attack_target
+                            + " "
+                            + move_index_to_word(index),
+                            player_data["color"],
+                        )
+                    )
+                    press_space_to_continue()
+                    add_vertical_spaces(1)
+            if companion_choice == "defend":
+                print(
+                    color_text(
+                        player_data["companion_name"]
+                        + " defends "
+                        + move_index_to_word(index),
+                        player_data["color"],
+                    )
+                )
+                press_space_to_continue()
+                add_vertical_spaces(1)
+            if companion_choice == "love you":
+                print(
+                    color_text(
+                        player_data["companion_name"]
+                        + " chooses to love "
+                        + player_data["name"]
+                        + " "
+                        + move_index_to_word(index),
+                        player_data["color"],
+                    )
+                )
+                press_space_to_continue()
+                add_vertical_spaces(1)
+        if "sprite_name" in move.keys():  # If it's an enemy...
+            enemy_choice = random_enemy_move()
+            if enemy_choice == "attack":
+                enemy_attack_target = random_enemy_attack_target(player_data)
+
+                # If 2 similar enemies and one is attacking
+                if len(enemy_stats) == 2 and enemy_stats[0] == enemy_stats[1]:
+                    if same_enemy_index == 0:
+                        print(
+                            color_text(
+                                move["display_name"]
+                                + " A "
+                                + "attacks "
+                                + enemy_attack_target
+                                + " "
+                                + move_index_to_word(index),
+                                "red",
+                            )
+                        )
+                        same_enemy_index = 1
+                        press_space_to_continue()
+                        add_vertical_spaces(1)
+                    else:
+                        print(
+                            color_text(
+                                move["display_name"]
+                                + " B "
+                                + "attacks "
+                                + enemy_attack_target
+                                + " "
+                                + move_index_to_word(index),
+                                "red",
+                            )
+                        )
+                        press_space_to_continue()
+                        add_vertical_spaces(1)
+                else:
+                    print(
+                        color_text(
+                            move["display_name"]
+                            + " attacks "
+                            + enemy_attack_target
+                            + " "
+                            + move_index_to_word(index),
+                            "red",
+                        )
+                    )
+                    press_space_to_continue()
+                    add_vertical_spaces(1)
+            if enemy_choice == "defend":
+                print(
+                    color_text(
+                        move["display_name"] + " defends " + move_index_to_word(index),
+                        "red",
+                    )
+                )
+                press_space_to_continue()
+                add_vertical_spaces(1)
+
+    ask_battle_questions(enemies_to_fight, player_data, display_battle_params)

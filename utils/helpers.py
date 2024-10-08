@@ -70,7 +70,7 @@ def wait_for_space_or_esc():
 
 
 def press_space_to_continue():
-    print(color_text("Press SPACE to continue...", "yellow"))
+    print(color_text("(Press SPACE to continue...)", "yellow"))
     while True:
 
         event = keyboard.read_event(suppress=True)
@@ -78,7 +78,6 @@ def press_space_to_continue():
 
         if event.event_type == keyboard.KEY_DOWN:
             if pressed_key == "space":
-                play_async_audio("accept")
                 return
 
 

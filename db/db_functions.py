@@ -5,6 +5,7 @@ import db.battle_db as battle_db
 player_db_file_path = "db/player_db.py"
 battle_db_file_path = "db/battle_db.py"
 
+# ! PLAYER_DB FUNCTIONS
 
 def clear_player_db():
     new_content = "player_data = {}\n"
@@ -24,6 +25,7 @@ def reload_player_data():
     importlib.reload(player_db)
     return player_db.player_data
 
+# ! BATTLE_DB FUNCTIONS
 
 def save_battle_data(enemies_to_fight: list[dict]):
     new_content = f"battle_data = {enemies_to_fight}\n"
