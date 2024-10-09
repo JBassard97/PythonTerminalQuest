@@ -130,54 +130,55 @@ def dialogue_series_1_part_1(player_data: dict):
 def add_starting_stats(player_data: dict):
     #! These apply to all weapon_classes
     player_data["completed_stories"] = ["intro_story"]
-    player_data["item_inventory"] = ["potion", "potion", "potion"]
+    player_data["item_inventory"] = ["potion", "potion", "throwing knife"]
+    player_data["stored_weapons"] = []
     player_data["item_inventory_capacity"] = 10
-    player_data["battles_completed"] = 0
+    player_data["total_battles_completed"] = 0
+    player_data["battles_completed_in_realm"] = 0
     player_data["current_funds"] = 100
     player_data["diamond_shards_obtained"] = 0
 
     player_data["player_max_health"] = 100
     player_data["player_current_health"] = 100
-    player_data["player_max_attack"] = 500
-    player_data["player_max_defense"] = 500
-    player_data["player_max_speed"] = 500
+    player_data["player_max_attack"] = 100
+    player_data["player_max_defense"] = 100
+    player_data["player_max_speed"] = 100
 
     player_data["companion_max_health"] = 50
-    player_data["companion_max_attack"] = 300
-    player_data["companion_max_defense"] = 300
-    player_data["companion_max_speed"] = 300
+    player_data["companion_max_attack"] = 100
+    player_data["companion_max_defense"] = 100
+    player_data["companion_max_speed"] = 100
     player_data["companion_current_health"] = 50
-    player_data["companion_current_attack"] = 50
-    player_data["companion_current_defense"] = 50
-    player_data["companion_current_speed"] = 50
+    player_data["companion_current_attack"] = 20
+    player_data["companion_current_defense"] = 20
+    player_data["companion_current_speed"] = 20
     player_data["is_companion_alive"] = True
 
-    #! "attack_boost" is a multiplier, NOT an addition
     weapon_class = player_data["weapon_class"]
     if weapon_class == "archer":  #! If Archer...
         player_data["current_weapon"] = {
             "name": "Basic Hunter Bow",
-            "attack_boost": 1,
+            "base_damage": 10,
         }
-        player_data["current_attack"] = 50  # LOW
-        player_data["current_defense"] = 100  # MID
-        player_data["current_speed"] = 150  # HIGH
+        player_data["current_attack"] = 20  # LOW
+        player_data["current_defense"] = 35  # MID
+        player_data["current_speed"] = 50  # HIGH
     if weapon_class == "swordsman":  #! If Swordsman
         player_data["current_weapon"] = {
             "name": "Inherited Blunt Sword",
-            "attack_boost": 1,
+            "base_damage": 10,
         }
-        player_data["current_attack"] = 100  # MID
-        player_data["current_defense"] = 150  # HIGH (because they have a shield)
-        player_data["current_speed"] = 50  # LOW (because the shield is heavy)
+        player_data["current_attack"] = 35  # MID
+        player_data["current_defense"] = 50  # HIGH (because they have a shield)
+        player_data["current_speed"] = 20  # LOW (because the shield is heavy)
     if weapon_class == "magician":  #! If Magician...
         player_data["current_weapon"] = {
             "name": "Lushgrove Tree Branch",
-            "attack_boost": 1,
+            "base_damage": 10,
         }
-        player_data["current_attack"] = 150  # HIGH
-        player_data["current_defense"] = 50  # LOW
-        player_data["current_speed"] = 100  # SPEED
+        player_data["current_attack"] = 50  # HIGH
+        player_data["current_defense"] = 20  # LOW
+        player_data["current_speed"] = 35  # SPEED
 
     player_data["current_realm"] = "tutorial"
     return player_data

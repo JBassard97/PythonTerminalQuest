@@ -3,10 +3,11 @@ enemy_data = {
         "spider": {
             "sprite_name": "spider",
             "display_name": "Unwelcome Spider",
+            "max_health": 20,
             "health": 20,
-            "attack": 50,
-            "defense": 50,
-            "speed": 50,
+            "attack": 10,
+            "defense": 20,
+            "speed": 20,
         },
     },
     "ember_mountain": {
@@ -17,7 +18,7 @@ enemy_data = {
         "flower": {
             "sprite_name": "flower",
             "display_name": "Maneating Flower",
-            "speed": 30,
+            "speed": 25,
         },
         "gryphon": {
             "sprite_name": "gryphon",
