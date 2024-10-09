@@ -7,10 +7,10 @@ from utils.helpers import (
     press_space_to_continue,
 )
 from utils.battles.battle_helpers import (
-    ask_random_battle_questions,
     create_enemies_battle_stats,
     create_enemies_to_fight,
 )
+from utils.battles.random_battle_logic import ask_random_battle_questions
 
 # from assets.sound_effects import play_async_audio
 
