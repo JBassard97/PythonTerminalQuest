@@ -15,6 +15,7 @@ from utils.battles.random_battle_questions import (
     ask_use_item_on_who,
     ask_companion_choice,
 )
+from utils.battles.random_battle_operations import player_perform_attack
 from utils.helpers import color_text, add_vertical_spaces, press_space_to_continue
 
 
@@ -101,9 +102,8 @@ def random_battle_play_by_play(
     enemy_stats = reload_battle_data()
 
     move_order = create_battle_move_order(player_data, enemy_stats)
-    same_enemy_index = (
-        0  # If 2 similar enemies, this keeps track of which is moving first
-    )
+    same_enemy_index = 0
+    enemy_defense_index = 0
     is_player_defending = False
     is_companion_defending = False
     is_enemy_a_defending = False
@@ -132,6 +132,9 @@ def random_battle_play_by_play(
                             player_data["color"],
                         )
                     )
+                    player_perform_attack(
+                        player_attack_target, is_enemy_a_defending, is_enemy_b_defending
+                    )
 
                 else:  # If player attacks one enemy or a unique named enemy
                     display_battle()
@@ -145,6 +148,9 @@ def random_battle_play_by_play(
                             + move_index_to_word(index),
                             player_data["color"],
                         )
+                    )
+                    player_perform_attack(
+                        player_attack_target, is_enemy_a_defending, is_enemy_b_defending
                     )
 
             if player_choice == "defend":
@@ -347,6 +353,11 @@ def random_battle_play_by_play(
                             "red",
                         )
                     )
+                    if enemy_defense_index == 0:
+                        is_enemy_a_defending = True
+                        enemy_defense_index = 1
+                    else:
+                        is_enemy_b_defending = True
 
             add_vertical_spaces(1)
             press_space_to_continue()

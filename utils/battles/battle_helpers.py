@@ -144,6 +144,7 @@ def display_battle():
         print(f'Health: {enemy_stats[0]["health"]}/{enemy_stats[0]["max_health"]}')
         add_vertical_spaces(1)
 
+
 def create_enemies_battle_stats(enemies_to_fight: list[str]):
     player_data = reload_player_data()
 
@@ -173,3 +174,16 @@ def create_battle_move_order(player_data: dict, enemy_stats: list[dict]):
 
     move_order = sorted(all_fighters, key=lambda x: x["speed"], reverse=True)
     return move_order
+
+
+# Returns the index of a dict in a list given a key and property value to search
+def find_enemy_index_by_display_name(value: str):
+    enemy_stats: list[dict] = reload_battle_data()
+    return next(
+        (
+            index
+            for index, d in enumerate(enemy_stats)
+            if d.get("display_name") == value
+        ),
+        -1,
+    )

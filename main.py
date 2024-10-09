@@ -152,9 +152,9 @@ def begin_adventure():
     return
 
 
-start_game()
+# start_game()
 
-# start_random_battle(reload_player_data())
+start_random_battle()
 
 # ? sprite test print funcs
 # battle_sprite_test_print()
