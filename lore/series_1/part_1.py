@@ -145,12 +145,12 @@ def add_starting_stats(player_data: dict):
     player_data["player_max_speed"] = 100
 
     player_data["companion_max_health"] = 50
-    player_data["companion_max_attack"] = 100
-    player_data["companion_max_defense"] = 100
+    player_data["companion_max_attack"] = 50
+    player_data["companion_max_defense"] = 50
     player_data["companion_max_speed"] = 100
     player_data["companion_current_health"] = 50
-    player_data["companion_current_attack"] = 20
-    player_data["companion_current_defense"] = 20
+    player_data["companion_current_attack"] = 10
+    player_data["companion_current_defense"] = 10
     player_data["companion_current_speed"] = 20
     player_data["is_companion_alive"] = True
 

@@ -33,6 +33,11 @@ def start_random_battle():
         print(color_text("You successfully fled the battle!!!", "magenta"))
         add_vertical_spaces(1)
         press_space_to_continue()
+    if battle_outcome == "win":
+        reset_screen()
+        print("You won the battle!")
+        add_vertical_spaces(1)
+        press_space_to_continue()
 
 
 # def start_boss_battle(player_data: dict):

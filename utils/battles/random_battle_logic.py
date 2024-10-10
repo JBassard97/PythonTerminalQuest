@@ -119,7 +119,7 @@ def random_battle_play_by_play(
                     player_attack_target == "a" or player_attack_target == "b"
                 ):  # If player attacks one of the two same named enemy
                     display_battle()
-                    add_vertical_spaces(2)
+                    add_vertical_spaces(1)
                     print(
                         color_text(
                             player_data["name"]
@@ -132,13 +132,10 @@ def random_battle_play_by_play(
                             player_data["color"],
                         )
                     )
-                    player_perform_attack(
-                        player_attack_target, is_enemy_a_defending, is_enemy_b_defending
-                    )
 
                 else:  # If player attacks one enemy or a unique named enemy
                     display_battle()
-                    add_vertical_spaces(2)
+                    add_vertical_spaces(1)
                     print(
                         color_text(
                             player_data["name"]
@@ -149,24 +146,25 @@ def random_battle_play_by_play(
                             player_data["color"],
                         )
                     )
-                    player_perform_attack(
-                        player_attack_target, is_enemy_a_defending, is_enemy_b_defending
-                    )
+                battle_outcome = player_perform_attack(
+                    player_attack_target, is_enemy_a_defending, is_enemy_b_defending
+                )
 
             if player_choice == "defend":
                 display_battle()
-                add_vertical_spaces(2)
+                add_vertical_spaces(1)
                 print(
                     color_text(
                         player_data["name"] + " defends " + move_index_to_word(index),
                         player_data["color"],
                     )
                 )
+                battle_outcome = None
                 is_player_defending = True
 
             if player_choice == "use item":
                 display_battle()
-                add_vertical_spaces(2)
+                add_vertical_spaces(1)
                 if item_target_choice == "a" or item_target_choice == "b":
                     print(
                         color_text(
@@ -198,12 +196,14 @@ def random_battle_play_by_play(
 
             add_vertical_spaces(1)
             press_space_to_continue()
+            if battle_outcome is not None:
+                return battle_outcome
 
         #! If it's the companion's move...
         if "companion_name" in move.keys():
             if companion_choice == "attack":
                 display_battle()
-                add_vertical_spaces(2)
+                add_vertical_spaces(1)
                 companion_attack_target = random_companion_attack_target(
                     player_data, enemy_stats
                 )
@@ -235,7 +235,7 @@ def random_battle_play_by_play(
 
             if companion_choice == "defend":
                 display_battle()
-                add_vertical_spaces(2)
+                add_vertical_spaces(1)
                 print(
                     color_text(
                         player_data["companion_name"]
@@ -248,7 +248,7 @@ def random_battle_play_by_play(
 
             if companion_choice == "love you":
                 display_battle()
-                add_vertical_spaces(2)
+                add_vertical_spaces(1)
                 print(
                     color_text(
                         player_data["companion_name"]
@@ -268,7 +268,7 @@ def random_battle_play_by_play(
             enemy_choice = random_enemy_move()
             if enemy_choice == "attack":
                 display_battle()
-                add_vertical_spaces(2)
+                add_vertical_spaces(1)
                 enemy_attack_target = random_enemy_attack_target(player_data)
 
                 # If 2 similar enemies and one is attacking
@@ -316,7 +316,7 @@ def random_battle_play_by_play(
                     )
             if enemy_choice == "defend":
                 display_battle()
-                add_vertical_spaces(2)
+                add_vertical_spaces(1)
                 if (
                     len(enemy_stats) == 2
                     and enemy_stats[0]["display_name"] == enemy_stats[1]["display_name"]

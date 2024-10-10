@@ -4,7 +4,15 @@ from db.db_functions import (
     save_player_data,
     save_battle_data,
 )
-from utils.battles.battle_helpers import find_enemy_index_by_display_name
+from utils.battles.battle_helpers import (
+    return_enemy_index,
+    calculate_raw_player_damage,
+    calculate_enemy_defense,
+    calculate_true_damage_to_enemy,
+    print_true_damage_to_enemy,
+    print_enemy_has_been_slain,
+)
+from utils.helpers import color_text
 import math
 
 #! ATTACK
@@ -14,32 +22,27 @@ def player_perform_attack(
     player_attack_target: str, is_enemy_a_defending: bool, is_enemy_b_defending: bool
 ):
     player_data = reload_player_data()
+    raw_damage = calculate_raw_player_damage(player_data)
+
     enemy_stats = reload_battle_data()
+    enemy_index = return_enemy_index(enemy_stats, player_attack_target)
+    enemy_defense = calculate_enemy_defense(
+        enemy_stats, enemy_index, is_enemy_a_defending, is_enemy_b_defending
+    )
+    true_damage = calculate_true_damage_to_enemy(raw_damage, enemy_defense)
 
-    if len(enemy_stats) == 2:
-        if enemy_stats[0]["display_name"] == enemy_stats[1]["display_name"]:
-            if player_attack_target == "a":
-                enemy_index = 0
-            elif player_attack_target == "b":
-                enemy_index = 1
+    print_true_damage_to_enemy(enemy_stats, player_attack_target, true_damage)
+
+    enemy_stats[enemy_index]["health"] -= true_damage
+    if enemy_stats[enemy_index]["health"] > 0:
+        save_battle_data(enemy_stats)
+    else:  # ! If your attack kills...
+        del enemy_stats[enemy_index]
+        print_enemy_has_been_slain(enemy_stats, player_attack_target)
+        if len(enemy_stats) == 0:
+            return "win"
         else:
-            enemy_index = find_enemy_index_by_display_name(player_attack_target)
-    else:
-        enemy_index = 0
-
-    weapon_damage = player_data["current_weapon"]["base_damage"]
-    player_attack = player_data["current_attack"] / 100
-    raw_damage = weapon_damage + (weapon_damage * player_attack)
-
-    enemy_defense: int = enemy_stats[enemy_index]["defense"] / 100
-    if (enemy_index == 0 and is_enemy_a_defending) or (
-        enemy_index == 1 and is_enemy_b_defending
-    ):
-        defense_bonus = 0.30
-        enemy_defense += defense_bonus
-
-    true_damage = math.ceil(raw_damage - (raw_damage * enemy_defense))
-    print(true_damage)
+            save_battle_data(enemy_stats)
 
 
 def companion_perform_attack(

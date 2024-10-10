@@ -15,6 +15,7 @@ from db.db_functions import (
 from db.enemy_db import enemy_data
 from db.item_db import item_data
 import random
+import math
 
 
 #! 1 or 2 randomly selected enemies to fight
@@ -187,3 +188,70 @@ def find_enemy_index_by_display_name(value: str):
         ),
         -1,
     )
+
+
+def return_enemy_index(enemy_stats: list[dict], attack_target: str):
+    if len(enemy_stats) == 2:
+        if enemy_stats[0]["display_name"] == enemy_stats[1]["display_name"]:
+            if attack_target == "a":
+                return 0
+            elif attack_target == "b":
+                return 1
+        else:
+            return find_enemy_index_by_display_name(attack_target)
+    else:
+        return 0
+
+
+def calculate_raw_player_damage(player_data: dict):
+    weapon_damage = player_data["current_weapon"]["base_damage"]
+    player_attack = player_data["current_attack"] / 100
+    return weapon_damage + (weapon_damage * player_attack)
+
+
+def calculate_enemy_defense(
+    enemy_stats: list[dict],
+    enemy_index: int,
+    is_enemy_a_defending: bool,
+    is_enemy_b_defending: bool,
+):
+    enemy_defense: int = enemy_stats[enemy_index]["defense"] / 100
+    if (enemy_index == 0 and is_enemy_a_defending) or (
+        enemy_index == 1 and is_enemy_b_defending
+    ):
+        defense_bonus = enemy_defense * 0.50
+        enemy_defense += defense_bonus
+    return enemy_defense
+
+
+def calculate_true_damage_to_enemy(raw_damage: float, enemy_defense: float):
+    true_damage = math.ceil(raw_damage - (raw_damage * enemy_defense))
+    if true_damage <= 0:
+        true_damage = 1
+    return true_damage
+
+
+def print_true_damage_to_enemy(
+    enemy_stats: list[dict], attack_target: str, true_damage: int
+):
+    if attack_target == "a" or attack_target == "b":
+        print(
+            color_text(
+                f'{true_damage} damage inflicted on {enemy_stats[0]["display_name"]} {attack_target.capitalize()}!',
+                "cyan",
+            )
+        )
+    else:
+        print(color_text(f"{true_damage} damage infliced on {attack_target}!", "cyan"))
+
+
+def print_enemy_has_been_slain(enemy_stats: list[dict], attack_target: str):
+    if attack_target == "a" or attack_target == "b":
+        print(
+            color_text(
+                f'{enemy_stats[0]["display_name"]} {attack_target.capitalize()} has been slain!',
+                "red",
+            )
+        )
+    else:
+        print(color_text(f"{attack_target} has been slain!", "red"))
