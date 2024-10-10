@@ -48,7 +48,6 @@ def player_perform_attack(
 def companion_perform_attack(
     companion_attack_target: str, is_enemy_a_defending: bool, is_enemy_b_defending: bool
 ):
-    print(companion_attack_target)
     player_data = reload_player_data()
     raw_damage = player_data["companion_current_attack"]
 

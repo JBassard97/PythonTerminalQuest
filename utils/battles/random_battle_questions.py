@@ -26,7 +26,7 @@ def ask_player_choice():
 def ask_attack_who():
     enemy_stats = reload_battle_data()
     first_enemy_display_name: str = enemy_stats[0]["display_name"]
-    print(f'{color_text("          Who will you attack?", "cyan")}')
+    print(f'{color_text("          Who will be attacked?", "cyan")}')
     add_vertical_spaces(1)
     if enemy_stats[0]["display_name"] == enemy_stats[1]["display_name"]:
         print(
