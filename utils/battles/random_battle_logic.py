@@ -15,7 +15,10 @@ from utils.battles.random_battle_questions import (
     ask_use_item_on_who,
     ask_companion_choice,
 )
-from utils.battles.random_battle_operations import player_perform_attack
+from utils.battles.random_battle_operations import (
+    player_perform_attack,
+    companion_perform_attack,
+)
 from utils.helpers import color_text, add_vertical_spaces, press_space_to_continue
 
 
@@ -232,6 +235,9 @@ def random_battle_play_by_play(
                             player_data["color"],
                         )
                     )
+                battle_outcome = companion_perform_attack(
+                    companion_attack_target, is_enemy_a_defending, is_enemy_b_defending
+                )
 
             if companion_choice == "defend":
                 display_battle()
@@ -262,6 +268,8 @@ def random_battle_play_by_play(
 
             add_vertical_spaces(1)
             press_space_to_continue()
+            if battle_outcome is not None:
+                return battle_outcome
 
         #! If it's an enemy's move...
         if "sprite_name" in move.keys():
