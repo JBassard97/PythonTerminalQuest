@@ -120,6 +120,7 @@ def random_battle_play_by_play(
     is_companion_defending = False
     is_enemy_a_defending = False
     is_enemy_b_defending = False
+    old_enemy_stats_len = len(enemy_stats)
 
     #! Loop through move_order
     for index, move in enumerate(move_order):
@@ -280,108 +281,122 @@ def random_battle_play_by_play(
         #! If it's an enemy's move...
         if "sprite_name" in move.keys():
             enemy_stats = reload_battle_data()
-            print(move)
+            new_enemy_stats_len = len(enemy_stats)
+
+            was_enemy_killed = old_enemy_stats_len > new_enemy_stats_len
+
             # TODO: find out how to skip a move if an enemy was JUST killed
-            # if len(enemy_stats) == 1 and same_enemy_index == 1:
-            #     pass
-            # elif move["display_name"] not in enemy_stats:
-            #     pass
+            if (
+                was_enemy_killed
+                and move["display_name"] != enemy_stats[0]["display_name"]
+            ):
+                continue
+            elif was_enemy_killed and same_enemy_index == 1:
+                continue
+            else:
+                enemy_choice = random_enemy_move()
 
-            # enemy_choice = random_enemy_move()
-            # if enemy_choice == "attack":
-            #     display_battle()
-            #     add_vertical_spaces(1)
-            #     enemy_attack_target = random_enemy_attack_target(player_data)
+                if enemy_choice == "attack":
+                    display_battle()
+                    add_vertical_spaces(1)
+                    enemy_attack_target = random_enemy_attack_target(player_data)
 
-            #     # If 2 similar enemies and one is attacking
-            #     if (
-            #         len(enemy_stats) == 2
-            #         and enemy_stats[0]["display_name"] == enemy_stats[1]["display_name"]
-            #     ):
-            #         if same_enemy_index == 0:
-            #             print(
-            #                 color_text(
-            #                     move["display_name"]
-            #                     + " A "
-            #                     + "attacks "
-            #                     + enemy_attack_target
-            #                     + " "
-            #                     + move_index_to_word(index),
-            #                     "red",
-            #                 )
-            #             )
-            #             same_enemy_index = 1
+                    # If 2 similar enemies and one is attacking
+                    if (
+                        len(enemy_stats) == 2
+                        and enemy_stats[0]["display_name"]
+                        == enemy_stats[1]["display_name"]
+                    ):
+                        if same_enemy_index == 0:
+                            print(
+                                color_text(
+                                    move["display_name"]
+                                    + " A "
+                                    + "attacks "
+                                    + enemy_attack_target
+                                    + " "
+                                    + move_index_to_word(index),
+                                    "red",
+                                )
+                            )
+                            same_enemy_index = 1
 
-            #         else:
-            #             print(
-            #                 color_text(
-            #                     move["display_name"]
-            #                     + " B "
-            #                     + "attacks "
-            #                     + enemy_attack_target
-            #                     + " "
-            #                     + move_index_to_word(index),
-            #                     "red",
-            #                 )
-            #             )
+                        else:
+                            print(
+                                color_text(
+                                    move["display_name"]
+                                    + " B "
+                                    + "attacks "
+                                    + enemy_attack_target
+                                    + " "
+                                    + move_index_to_word(index),
+                                    "red",
+                                )
+                            )
 
-            #     else:
-            #         print(
-            #             color_text(
-            #                 move["display_name"]
-            #                 + " attacks "
-            #                 + enemy_attack_target
-            #                 + " "
-            #                 + move_index_to_word(index),
-            #                 "red",
-            #             )
-            #         )
-            # if enemy_choice == "defend":
-            #     display_battle()
-            #     add_vertical_spaces(1)
-            #     if (
-            #         len(enemy_stats) == 2
-            #         and enemy_stats[0]["display_name"] == enemy_stats[1]["display_name"]
-            #     ):
-            #         if same_enemy_index == 0:
-            #             print(
-            #                 color_text(
-            #                     move["display_name"]
-            #                     + " A "
-            #                     + "defends "
-            #                     + move_index_to_word(index),
-            #                     "red",
-            #                 )
-            #             )
-            #             is_enemy_a_defending = True
-            #             same_enemy_index = 1
-            #         else:
-            #             print(
-            #                 color_text(
-            #                     move["display_name"]
-            #                     + " B "
-            #                     + "defends "
-            #                     + move_index_to_word(index),
-            #                     "red",
-            #                 )
-            #             )
-            #             is_enemy_b_defending = True
-            #     else:
-            #         print(
-            #             color_text(
-            #                 move["display_name"]
-            #                 + " defends "
-            #                 + move_index_to_word(index),
-            #                 "red",
-            #             )
-            #         )
-            #         if enemy_defense_index == 0:
-            #             is_enemy_a_defending = True
-            #             enemy_defense_index = 1
-            #         else:
-            #             is_enemy_b_defending = True
+                    else:
+                        print(
+                            color_text(
+                                move["display_name"]
+                                + " attacks "
+                                + enemy_attack_target
+                                + " "
+                                + move_index_to_word(index),
+                                "red",
+                            )
+                        )
+                if enemy_choice == "defend":
+                    display_battle()
+                    add_vertical_spaces(1)
+                    if (
+                        len(enemy_stats) == 2
+                        and enemy_stats[0]["display_name"]
+                        == enemy_stats[1]["display_name"]
+                    ):
+                        if same_enemy_index == 0:
+                            print(
+                                color_text(
+                                    move["display_name"]
+                                    + " A "
+                                    + "defends "
+                                    + move_index_to_word(index),
+                                    "red",
+                                )
+                            )
+                            is_enemy_a_defending = True
+                            same_enemy_index = 1
+                        else:
+                            print(
+                                color_text(
+                                    move["display_name"]
+                                    + " B "
+                                    + "defends "
+                                    + move_index_to_word(index),
+                                    "red",
+                                )
+                            )
+                            is_enemy_b_defending = True
+                    else:
+                        print(
+                            color_text(
+                                move["display_name"]
+                                + " defends "
+                                + move_index_to_word(index),
+                                "red",
+                            )
+                        )
+                        if enemy_defense_index == 0:
+                            is_enemy_a_defending = True
+                            enemy_defense_index = 1
+                        else:
+                            is_enemy_b_defending = True
 
             add_vertical_spaces(1)
+            # print(f"move display name: {move['display_name']}")
+            # print(f"enemy_stats: {enemy_stats}")
+            # print(f"same_enemy_index: {same_enemy_index}")
+            # print(f"enemy_stats length: {len(enemy_stats)}")
+            # print(f"was enemy just killed: {was_enemy_just_killed}")
             press_space_to_continue()
 
     battle_outcome = ask_random_battle_questions()
