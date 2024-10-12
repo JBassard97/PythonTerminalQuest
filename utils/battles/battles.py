@@ -1,5 +1,5 @@
 from db.enemy_db import enemy_data
-from db.db_functions import reload_player_data, save_battle_data
+from db.db_functions import reload_player_data, save_battle_data, clear_battle_db
 from utils.helpers import (
     reset_screen,
     color_text,
@@ -30,16 +30,30 @@ def start_random_battle():
     battle_outcome = ask_random_battle_questions()
 
     if battle_outcome == "ran away":
+        clear_battle_db()
         reset_screen()
         print(color_text("You successfully fled the battle!!!", "magenta"))
         add_vertical_spaces(1)
         press_space_to_continue()
     if battle_outcome == "win":
+        clear_battle_db()
         reset_screen()
         print("You won the battle!")
+        add_vertical_spaces(1)
+        press_space_to_continue()
+    if battle_outcome == "lose":
+        clear_battle_db()
+        reset_screen()
+        print(
+            color_text(
+                player_data["name"] + " is slain and the battle has been lost!", "red"
+            )
+        )
         add_vertical_spaces(1)
         press_space_to_continue()
 
 
 # def start_boss_battle(player_data: dict):
 #     print("BOSS BATTLE")
+
+

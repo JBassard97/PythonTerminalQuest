@@ -33,7 +33,7 @@ def ask_weapon_class():
     while True:
         weapon_input = (
             input(
-                f"{color_text('What weapon class are you starting your journey with? (This may be changed later!)', 'cyan')}\n"
+                f"{color_text('What weapon class are you starting your journey with? (This may be changed later!)', 'cyan')}\n\n"
                 f"{color_text('Swordsman', 'magenta')}: ({color_text('Attack: Mid', 'blue')},{color_text(' Defense: High', 'green')},{color_text(' Speed: Low', 'red')})\n"
                 f"{color_text('Archer', 'magenta')}: ({color_text('Attack: Low', 'red')},{color_text(' Defense: Mid', 'blue')},{color_text(' Speed: High', 'green')})\n"
                 f"{color_text('Magician', 'magenta')}: ({color_text('Attack: High', 'green')},{color_text(' Defense: Low', 'red')},{color_text(' Speed: Mid', 'blue')})\n\n"

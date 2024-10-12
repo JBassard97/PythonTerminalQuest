@@ -1,4 +1,4 @@
-from db.db_functions import reload_player_data, reload_battle_data, clear_battle_db
+from db.db_functions import reload_player_data, reload_battle_data
 from db.item_db import item_data
 from utils.helpers import color_text, add_vertical_spaces
 

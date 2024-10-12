@@ -16,7 +16,7 @@ dialogue_dict = {
             ),
             3: f'{ct("To the northeast lies ", "cyan")}{ct("Riverfall: ", "blue")}{ct("the freely-flowing source of all fresh water across all 4 realms.", "cyan")}',
             4: f'{ct("To the southeast lies ", "cyan")}{ct("Lushgrove: ", "green")}{ct("the origin of all life and sustenance to be shared equally amongst the inhabitants of Pythonia.", "cyan")}',
-            5: f'{ct("To the southwest lies ", "cyan")}{ct("Cinderdust: ", "yellow")}{ct("a vast desert of volcanic ash from the realm above, serving as a burial ground for the departed.", "cyan")}',
+            5: f'{ct("To the southwest lies ", "cyan")}{ct("Cinderdune: ", "yellow")}{ct("a vast desert of volcanic ash from the realm above, serving as a burial ground for the departed.", "cyan")}',
             6: f'{ct("To the northwest lies ", "cyan")}{ct("Ember Mountain: ", "red")}{ct("a place of immense power, where all atmospheric warmth emanates from", "cyan")}',
             7: ct(
                 "At the center of this vast land lies Pythonia Castle: home of the ",
@@ -52,7 +52,7 @@ dialogue_dict = {
                 "cyan",
             )
             + ct("Evil ", "red")
-            + ct("under its homey fascade.", "cyan"),
+            + ct("under its homley fascade.", "cyan"),
             14: ct(
                 "Any investigations into this matter have been met with search parties that simply ",
                 "cyan",
@@ -67,7 +67,7 @@ dialogue_dict = {
                 "Having grown mournfull over the lives lost in the name of protecting Pythonia from some unnamed threat,",
                 "cyan",
             ),
-            18: ct("the Royal Family ceased any further interactions into the ", "cyan")
+            18: ct("the Royal Family ceased any further queries into the ", "cyan")
             + ct("Null Realm.", "magenta"),
             19: ct(
                 "However, this apprehension later became their downfall when the ",

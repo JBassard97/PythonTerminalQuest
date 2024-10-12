@@ -3,14 +3,10 @@ from utils.helpers import (
     color_text,
     reset_screen,
     add_vertical_spaces,
-    press_space_to_continue,
 )
 from db.db_functions import (
-    save_battle_data,
     reload_battle_data,
-    save_player_data,
     reload_player_data,
-    clear_battle_db,
 )
 from db.enemy_db import enemy_data
 from db.item_db import item_data
@@ -217,17 +213,45 @@ def calculate_enemy_defense(
     is_enemy_a_defending: bool,
     is_enemy_b_defending: bool,
 ):
-    enemy_defense: int = enemy_stats[enemy_index]["defense"] / 100
+    enemy_defense = enemy_stats[enemy_index]["defense"] / 100
     if (enemy_index == 0 and is_enemy_a_defending) or (
         enemy_index == 1 and is_enemy_b_defending
     ):
+        print("Its choice to defend hinders your attack")
         defense_bonus = enemy_defense * 0.50
         enemy_defense += defense_bonus
     return enemy_defense
 
 
-def calculate_true_damage_to_enemy(raw_damage: float, enemy_defense: float):
-    true_damage = math.ceil(raw_damage - (raw_damage * enemy_defense))
+def calculate_player_or_companion_defense(
+    player_data: dict,
+    enemy_attack_target: str,
+    is_player_defending: bool,
+    is_companion_defending: bool,
+):
+    if enemy_attack_target == player_data["name"]:
+        target_defense = player_data["current_defense"] / 100
+        if is_player_defending:
+            print(
+                f"{player_data['name']}'s choice to defend hinders the enemy's attack"
+            )
+            defense_bonus = target_defense * 0.50
+            target_defense += defense_bonus
+        return target_defense
+
+    elif enemy_attack_target == player_data["companion_name"]:
+        target_defense = player_data["companion_current_defense"] / 100
+        if is_companion_defending:
+            print(
+                f"{player_data['companion_name']}'s choice to defend hinders the enemy's attack"
+            )
+            defense_bonus = target_defense * 0.50
+            target_defense += defense_bonus
+        return target_defense
+
+
+def calculate_true_damage(raw_damage: float, target_defense: float):
+    true_damage = math.ceil(raw_damage - (raw_damage * target_defense))
     if true_damage <= 0:
         true_damage = 1
     return true_damage
@@ -247,6 +271,12 @@ def print_true_damage_to_enemy(
         print(color_text(f"{true_damage} damage infliced on {attack_target}!", "cyan"))
 
 
+def print_true_damage_to_player_or_companion(
+    enemy_attack_target: str, true_damage: int
+):
+    print(color_text(f"{enemy_attack_target} suffered {true_damage} damage!", "cyan"))
+
+
 def print_enemy_has_been_slain(enemy_stats: list[dict], attack_target: str):
     if attack_target == "a" or attack_target == "b":
         print(
@@ -257,3 +287,7 @@ def print_enemy_has_been_slain(enemy_stats: list[dict], attack_target: str):
         )
     else:
         print(color_text(f"{attack_target} has been slain!", "red"))
+
+
+def print_companion_has_been_slain(enemy_attack_target: str):
+    print(color_text(f"{enemy_attack_target} has been slain!", "red"))

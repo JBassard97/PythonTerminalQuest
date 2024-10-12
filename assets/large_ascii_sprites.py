@@ -86,7 +86,7 @@ large_sprite_dict = {
         "k": f"        {color_text('║ Barracks  ║','cyan')}  ║   Castle  ║  {color_text('║ Monastary ║','cyan')}       ",
         "l": f"        {color_text('╚═══════════╝','cyan')} ╔╩═════╦═════╩╗ {color_text('╚═══════════╝','cyan')}       ",
         "m": f" {color_text('╔════════════════╗','yellow')}   ║ {color_text('╔════╩════╗','cyan')} ║   {color_text('╔════════════════╗','green')}",
-        "n": f" {color_text('║   Cinderdust   ╠','yellow')}═══╝ {color_text('║  South  ║','cyan')} ╚═══{color_text('╣   Lushgrove    ║','green')}",
+        "n": f" {color_text('║   Cinderdune   ╠','yellow')}═══╝ {color_text('║  South  ║','cyan')} ╚═══{color_text('╣   Lushgrove    ║','green')}",
         "o": f" {color_text('╚════════════════╝','yellow')}     {color_text('║ Caravan ║','cyan')}     {color_text('╚════════════════╝','green')}",
         "p": f"                        {color_text('╚═════════╝','cyan')}                       ",
     },

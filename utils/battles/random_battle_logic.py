@@ -4,7 +4,6 @@ from utils.battles.battle_helpers import (
     create_battle_move_order,
     display_battle,
     move_index_to_word,
-    random_companion_attack_target,
     random_enemy_move,
     random_enemy_attack_target,
 )
@@ -18,6 +17,7 @@ from utils.battles.random_battle_questions import (
 from utils.battles.random_battle_operations import (
     player_perform_attack,
     companion_perform_attack,
+    enemy_perform_attack,
 )
 from utils.helpers import color_text, add_vertical_spaces, press_space_to_continue
 
@@ -37,7 +37,6 @@ def ask_random_battle_questions():
         player_choice = ask_player_choice()
 
         if player_choice == "run away":
-            clear_battle_db()
             return "ran away"
 
         if player_choice == "attack":
@@ -336,6 +335,13 @@ def random_battle_play_by_play(
                             "red",
                         )
                     )
+                battle_outcome = enemy_perform_attack(
+                    move["display_name"],
+                    enemy_attack_target,
+                    is_player_defending,
+                    is_companion_defending,
+                )
+
             if enemy_choice == "defend":
                 display_battle()
                 add_vertical_spaces(1)
@@ -383,6 +389,8 @@ def random_battle_play_by_play(
 
             add_vertical_spaces(1)
             press_space_to_continue()
+            if battle_outcome is not None:
+                return battle_outcome
 
         index += 1
 
@@ -390,3 +398,4 @@ def random_battle_play_by_play(
 
     if battle_outcome:
         return battle_outcome
+
