@@ -149,10 +149,12 @@ def display_battle():
 def create_enemies_battle_stats(enemies_to_fight: list[str]):
     player_data = reload_player_data()
 
-    enemy_battle_stats = []
+    enemy_ids = {0: "a", 1: "b"}
+    enemy_battle_stats: list[dict] = []
 
-    for enemy in enemies_to_fight:
-        enemy = enemy_data[player_data["current_realm"]][enemy]
+    for index, enemy in enumerate(enemies_to_fight):
+        enemy: dict = enemy_data[player_data["current_realm"]][enemy].copy()
+        enemy["enemy_id"] = enemy_ids[index]
         enemy_battle_stats.append(enemy)
 
     return enemy_battle_stats
