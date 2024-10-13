@@ -136,23 +136,26 @@ def ask_use_item_on_who(
                 )
                 print(color_text("Enter: A or B", "yellow"))
                 valid_item_targets = ["a", "b"]
+                add_vertical_spaces(1)
+                while True:
+                    item_target_choice = input().strip().lower()
+                    if item_target_choice in valid_item_targets:
+                        return item_target_choice
             else:
-                formal_enemies_to_fight: list[str] = [
-                    enemy_stats[0]["display_name"],
-                    enemy_stats[1]["display_name"],
-                ]
                 print(
-                    f'{color_text(f"{formal_enemies_to_fight[0]}", "red")} {color_text("or", "yellow")} {color_text(f"{formal_enemies_to_fight[1]}?", "red")}'
+                    f"{color_text(enemy_stats[0]['display_name'], 'red')} {color_text('or', 'yellow')} {color_text(enemy_stats[1]['display_name']+ ' ?', 'red')}"
                 )
-                valid_item_targets = [item.lower() for item in formal_enemies_to_fight]
-        add_vertical_spaces(1)
-        while True:
-            item_target_choice = input().strip().lower()
-            if item_target_choice in valid_item_targets:
-                if item_target_choice == valid_item_targets[0]:
-                    return formal_enemies_to_fight[0]
-                else:
-                    return formal_enemies_to_fight[1]
+                valid_item_targets = [
+                    enemy_stats[0]["display_name"].lower(),
+                    enemy_stats[1]["display_name"].lower(),
+                ]
+                add_vertical_spaces(1)
+                while True:
+                    item_target_choice = input().strip().lower()
+                    if item_target_choice == valid_item_targets[0]:
+                        return enemy_stats[0]["display_name"]
+                    else:
+                        return enemy_stats[1]["display_name"]
 
 
 def ask_companion_choice():

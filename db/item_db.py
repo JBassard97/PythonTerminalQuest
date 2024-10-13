@@ -30,7 +30,7 @@ item_data = {
     "battle_items": {
         "throwing knife": {
             "category": "battle_items",
-            "description": "An aerodynamic blade use to inflict quick damage",
+            "description": "An aerodynamic blade used to inflict a flat 20 damage",
             "damage_value": 20,
             "base_price": 20,
             "resell_price": 15,

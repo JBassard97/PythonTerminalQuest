@@ -18,6 +18,7 @@ from utils.battles.random_battle_operations import (
     player_perform_attack,
     companion_perform_attack,
     enemy_perform_attack,
+    player_perform_use_item,
 )
 from utils.helpers import color_text, add_vertical_spaces, press_space_to_continue
 
@@ -49,8 +50,23 @@ def ask_random_battle_questions():
             # Defend question placeholder
             pass
         elif player_choice == "use item":
+            usable_item_count = 0
+            for item in player_data["item_inventory"]:
+                if (
+                    item in item_data["heal_items"]
+                    or item in item_data["buff_items"]
+                    or item in item_data["battle_items"]
+                ):
+                    usable_item_count += 1
             display_battle()
-            item_choice = ask_which_item()
+            if usable_item_count > 0:
+                item_choice = ask_which_item()
+            else:
+                print(color_text("You are out of usable items!", "red"))
+                add_vertical_spaces(1)
+                item_choice = "back"
+                press_space_to_continue()
+
             # If player chose to go back, restart question loop
             if item_choice == "back":
                 continue
@@ -206,6 +222,9 @@ def random_battle_play_by_play(
                             player_data["color"],
                         )
                     )
+                battle_outcome = player_perform_use_item(
+                    item_choice, item_target_choice
+                )
 
             add_vertical_spaces(1)
             press_space_to_continue()
@@ -398,4 +417,3 @@ def random_battle_play_by_play(
 
     if battle_outcome:
         return battle_outcome
-

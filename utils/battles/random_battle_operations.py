@@ -5,6 +5,7 @@ from db.db_functions import (
     save_battle_data,
     clear_battle_db,
 )
+from db.item_db import item_data
 from utils.battles.battle_helpers import (
     return_enemy_index,
     find_enemy_index_by_display_name,
@@ -16,9 +17,11 @@ from utils.battles.battle_helpers import (
     calculate_player_or_companion_defense,
     print_true_damage_to_player_or_companion,
     print_companion_has_been_slain,
+    print_item_target_healed,
+    print_health_maxed_out,
 )
 from utils.helpers import color_text
-import math
+
 
 #! ATTACK
 
@@ -125,8 +128,60 @@ def enemy_perform_attack(
 #! USE ITEM
 
 
-def player_perform_use_item():
-    pass
+def player_perform_use_item(item_choice: str, item_target_choice: str):
+    player_data = reload_player_data()
+    enemy_stats = reload_battle_data()
+
+    if item_choice in item_data["heal_items"]:
+        heal_value: int = item_data["heal_items"][item_choice]["heal_value"]
+        print_item_target_healed(heal_value, item_target_choice)
+
+        if item_target_choice == player_data["name"]:
+            player_data["player_current_health"] += heal_value
+            if player_data["player_current_health"] > player_data["player_max_health"]:
+                print_health_maxed_out(item_target_choice)
+                player_data["player_current_health"] = player_data["player_max_health"]
+
+        elif item_target_choice == player_data["companion_name"]:
+            player_data["companion_current_health"] += heal_value
+            if (
+                player_data["companion_current_health"]
+                > player_data["companion_max_health"]
+            ):
+                print_health_maxed_out(item_target_choice)
+                player_data["companion_current_health"] = player_data[
+                    "companion_max_health"
+                ]
+
+        player_data["item_inventory"].remove(item_choice)
+        save_player_data(player_data)
+
+    if item_choice in item_data["buff_items"]:
+        pass
+
+    # Battle Items ignore enemy defense and perform flat rate damages
+    if item_choice in item_data["battle_items"]:
+        damage_value = item_data["battle_items"][item_choice]["damage_value"]
+        enemy_index = return_enemy_index(enemy_stats, item_target_choice)
+
+        print_true_damage_to_enemy(enemy_stats, item_target_choice, damage_value)
+        enemy_stats[enemy_index]["health"] -= damage_value
+        if enemy_stats[enemy_index]["health"] > 0:
+            save_battle_data(enemy_stats)
+        else:  # ! If your attack kills...
+            print_enemy_has_been_slain(enemy_stats, item_target_choice)
+            del enemy_stats[enemy_index]
+            if len(enemy_stats) == 0:
+                clear_battle_db()
+                return "win"
+            else:
+                save_battle_data(enemy_stats)
+
+        player_data["item_inventory"].remove(item_choice)
+        save_player_data(player_data)
+
+    # FOR NOW:
+    return None
 
 
 #! LOVE

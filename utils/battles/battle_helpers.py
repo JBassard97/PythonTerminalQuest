@@ -291,3 +291,15 @@ def print_enemy_has_been_slain(enemy_stats: list[dict], attack_target: str):
 
 def print_companion_has_been_slain(enemy_attack_target: str):
     print(color_text(f"{enemy_attack_target} has been slain!", "red"))
+
+
+def print_item_target_healed(heal_value: int, item_target_choice: str):
+    print(
+        color_text(
+            f'{item_target_choice} recovered {heal_value} health!', "green"
+        )
+    )
+
+
+def print_health_maxed_out(item_target_choice: str):
+    print(color_text(item_target_choice + "'s health is maxed out", "cyan"))
