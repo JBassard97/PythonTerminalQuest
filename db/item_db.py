@@ -11,7 +11,7 @@ item_data = {
         },
         "potion+": {
             "category": "heal_items",
-            "decription": "Recovers 50 health",
+            "description": "Recovers 50 health",
             "heal_value": 50,
             "base_price": 25,
             "resell_price": 20,
@@ -19,7 +19,7 @@ item_data = {
         },
         "potion++": {
             "category": "heal_items",
-            "decription": "Recovers 100 health",
+            "description": "Recovers 100 health",
             "heal_value": 100,
             "base_price": 50,
             "resell_price": 40,

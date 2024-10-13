@@ -19,6 +19,7 @@ from utils.battles.random_battle_operations import (
     companion_perform_attack,
     enemy_perform_attack,
     player_perform_use_item,
+    companion_perform_love
 )
 from utils.helpers import color_text, add_vertical_spaces, press_space_to_continue
 
@@ -291,6 +292,7 @@ def random_battle_play_by_play(
                         player_data["color"],
                     )
                 )
+                battle_outcome = companion_perform_love()
 
             add_vertical_spaces(1)
             press_space_to_continue()

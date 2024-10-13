@@ -20,6 +20,8 @@ from utils.battles.battle_helpers import (
     print_item_target_healed,
     print_health_maxed_out,
 )
+import random
+
 from utils.helpers import color_text
 
 
@@ -180,7 +182,6 @@ def player_perform_use_item(item_choice: str, item_target_choice: str):
         player_data["item_inventory"].remove(item_choice)
         save_player_data(player_data)
 
-    # FOR NOW:
     return None
 
 
@@ -188,4 +189,42 @@ def player_perform_use_item(item_choice: str, item_target_choice: str):
 
 
 def companion_perform_love():
-    pass
+    player_data = reload_player_data()
+    specific_love = random.choice(["heal player", "find item"])
+
+    if specific_love == "heal player":
+        pass
+
+    elif specific_love == "find item":
+        findable_items = []
+        heal_items = list(item_data["heal_items"])
+        buff_items = list(item_data["buff_items"])
+        battle_items = list(item_data["battle_items"])
+        findable_items += heal_items + buff_items + battle_items
+        random_item = random.choice(findable_items)
+
+        sniffers = ["dog", "wolf", "bear"]
+        flyers = ["falcon", "crow", "flamingo", "owl"]
+        if player_data["companion_type"] in sniffers:
+            verb = "sniffed"
+        elif player_data["companion_type"] in flyers:
+            verb = "flew"
+        else:
+            verb = "scavenged"
+            
+        print(
+            color_text(
+                "Your companion "
+                + verb
+                + " around the area and found a "
+                + random_item
+                + "!",
+                "cyan",
+            )
+        )
+
+        player_data["item_inventory"].append(random_item)
+        save_player_data(player_data)
+
+    # FOR NOW
+    return None
