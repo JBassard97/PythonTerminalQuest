@@ -294,12 +294,47 @@ def print_companion_has_been_slain(enemy_attack_target: str):
 
 
 def print_item_target_healed(heal_value: int, item_target_choice: str):
-    print(
-        color_text(
-            f'{item_target_choice} recovered {heal_value} health!', "green"
-        )
-    )
+    print(color_text(f"{item_target_choice} recovered {heal_value} health!", "green"))
 
 
 def print_health_maxed_out(item_target_choice: str):
     print(color_text(item_target_choice + "'s health is maxed out", "cyan"))
+
+
+def print_random_love_heal_action():
+    potential_actions = [
+        "gave you a warm hug",
+        "brewed you a cup of tea",
+        "baked a batch of cookies",
+        "wrapped you in a soft blanket",
+        "told you a funny joke",
+        "brewed you a cup of coffee",
+        "cooked you an omelet",
+        "wrote you a poem",
+        "bought you a box of chocolates",
+        "performed a cute trick",
+        "knit you a sweater",
+        "made you hot chocolate",
+        "sang you a love song",
+        "cheered you on",
+        "reminded you of home",
+        "made fun of an enemy",
+        "booped your nose",
+        "shrieked a hearty war cry",
+        "performed a harmonica etude",
+        "prayed to a higher power",
+        "helped file your taxes",
+        "pirated Sailor Moon",
+        "took you on a movie night",
+        "did the secret handshake with you",
+        "cooked a perfect medium-rare steak",
+        "paid your bills",
+        "balanced your checkbook",
+        "served you beef stew",
+        "baked you bread",
+        "poured a warm glass of milk",
+        "changed your car's oil",
+    ]
+    random_action = random.choice(potential_actions)
+
+    print(color_text(f"Your companion {random_action} to heal your soul...", "cyan"))

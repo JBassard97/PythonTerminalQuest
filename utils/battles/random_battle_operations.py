@@ -19,6 +19,7 @@ from utils.battles.battle_helpers import (
     print_companion_has_been_slain,
     print_item_target_healed,
     print_health_maxed_out,
+    print_random_love_heal_action,
 )
 import random
 
@@ -193,7 +194,22 @@ def companion_perform_love():
     specific_love = random.choice(["heal player", "find item"])
 
     if specific_love == "heal player":
-        pass
+        health_deficit = (
+            player_data["player_max_health"] - player_data["player_current_health"]
+        )
+        
+        print_random_love_heal_action()
+
+        if health_deficit == 0:
+            print(color_text("But your health was already full!", "green"))
+        else:
+            random_recovery = random.randint(1, health_deficit)
+            print(
+                color_text(f"And helped you recover {random_recovery} health!", "green")
+            )
+
+        player_data["player_current_health"] += random_recovery
+        save_player_data(player_data)
 
     elif specific_love == "find item":
         findable_items = []
@@ -211,7 +227,7 @@ def companion_perform_love():
             verb = "flew"
         else:
             verb = "scavenged"
-            
+
         print(
             color_text(
                 "Your companion "
