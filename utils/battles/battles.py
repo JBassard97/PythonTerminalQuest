@@ -25,9 +25,9 @@ def start_random_battle():
     enemies_to_fight: list[str] = create_enemies_to_fight(enemy_possibilities)
 
     # ! Creates a list in battle_db storing all stats for each enemy
-    print(create_enemies_battle_stats(enemies_to_fight))
     save_battle_data(create_enemies_battle_stats(enemies_to_fight))
 
+    reset_all_buffs()
     battle_outcome = ask_random_battle_questions()
 
     if battle_outcome == "ran away":

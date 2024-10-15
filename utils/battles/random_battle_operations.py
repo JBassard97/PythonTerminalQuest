@@ -20,7 +20,8 @@ from utils.battles.battle_helpers import (
     print_item_target_healed,
     print_health_maxed_out,
     print_random_love_heal_action,
-    print_item_target_buffed,
+    print_random_love_buff_action,
+    print_target_buffed,
 )
 import random
 import math
@@ -180,7 +181,7 @@ def player_perform_use_item(item_choice: str, item_target_choice: str):
             stat_target = "companion_current_" + stat_boosted
             max_target = "companion_max_" + stat_boosted
 
-        print_item_target_buffed(boost, stat_boosted, item_target_choice)
+        print_target_buffed(boost, stat_boosted, item_target_choice)
 
         player_data[stat_target] = player_data[stat_target] + math.ceil(
             player_data[stat_target] * (boost / 100)
@@ -223,7 +224,7 @@ def player_perform_use_item(item_choice: str, item_target_choice: str):
 
 def companion_perform_love():
     player_data = reload_player_data()
-    specific_love = random.choice(["heal player", "find item"])
+    specific_love = random.choice(["heal player", "find item", "buff player"])
 
     if specific_love == "heal player":
         health_deficit = (
@@ -271,6 +272,20 @@ def companion_perform_love():
         )
 
         player_data["item_inventory"].append(random_item)
+        save_player_data(player_data)
+
+    if specific_love == "buff player":
+        random_stat = random.choice(["attack", "defense", "speed"])
+        stat_target = "current_" + random_stat
+        boost = 20
+
+        print_random_love_buff_action(random_stat)
+        print_target_buffed(boost, random_stat, player_data["name"])
+
+        player_data[stat_target] = player_data[stat_target] + math.ceil(
+            player_data[stat_target]
+            * ((boost / 100) * (player_data["diamond_shards_obtained"] + 1))
+        )
         save_player_data(player_data)
 
     # FOR NOW

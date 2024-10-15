@@ -37,7 +37,7 @@ item_data = {
         },
         "defense booster": {
             "category": "buff_items",
-            "description": "A banana-flavored liquid that boosts defense by 25%",
+            "description": "A orange-flavored liquid that boosts defense by 25%",
             "defense_boost": 25,
             "base_price": 35,
             "resell_price": 25,
@@ -45,7 +45,7 @@ item_data = {
         },
         "speed booster": {
             "category": "buff_items",
-            "description": "A coffee-flavored liquid that boosts speed by 25%",
+            "description": "A espresso-flavored liquid that boosts speed by 25%",
             "speed_boost": 25,
             "base_price": 35,
             "resell_price": 25,

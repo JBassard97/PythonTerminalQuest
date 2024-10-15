@@ -141,6 +141,7 @@ def random_battle_play_by_play(
 
     #! Loop through move_order
     for move in move_order:
+        battle_outcome = None
 
         #! If it's the player's move...
         if "player_name" in move.keys():
@@ -189,7 +190,6 @@ def random_battle_play_by_play(
                         player_data["color"],
                     )
                 )
-                battle_outcome = None
                 is_player_defending = True
 
             if player_choice == "use item":

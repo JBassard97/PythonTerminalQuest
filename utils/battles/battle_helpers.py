@@ -103,6 +103,22 @@ def display_battle():
     print_battle_sprites_side_by_side(
         enemies_to_fight, "red", protags_to_fight, player_data["color"]
     )
+    if len(enemy_stats) == 2:
+        if enemy_stats[0]["display_name"] == enemy_stats[1]["display_name"]:
+            print(color_text(enemy_stats[0]["display_name"] + " A's stats:", "red"))
+            print(f'Health: {enemy_stats[0]["health"]}/{enemy_stats[0]["max_health"]}')
+            add_vertical_spaces(1)
+            print(color_text(enemy_stats[1]["display_name"] + " B's stats:", "red"))
+            print(f'Health: {enemy_stats[1]["health"]}/{enemy_stats[1]["max_health"]}')
+        else:
+            print(color_text(enemy_stats[0]["display_name"] + "'s stats:", "red"))
+            print(f'Health: {enemy_stats[0]["health"]}/{enemy_stats[0]["max_health"]}')
+            add_vertical_spaces(1)
+            print(color_text(enemy_stats[1]["display_name"] + "'s stats:", "red"))
+            print(f'Health: {enemy_stats[1]["health"]}/{enemy_stats[1]["max_health"]}')
+    else:
+        print(color_text(enemy_stats[0]["display_name"] + "'s stats:", "red"))
+        print(f'Health: {enemy_stats[0]["health"]}/{enemy_stats[0]["max_health"]}')
     add_vertical_spaces(1)
     print(color_text(player_data["name"] + "'s stats:", player_data["color"]))
     player_health_color = "green"
@@ -140,28 +156,8 @@ def display_battle():
         print(
             f'Health: {color_text(player_data["companion_current_health"], companion_health_color)}/{color_text(player_data["companion_max_health"], "green")} | Attack: {color_text(player_data["companion_current_attack"], "green" if player_data["companion_current_attack"] > player_data["companion_stored_attack"] else None)} | Defense: {color_text(player_data["companion_current_defense"], "green" if player_data["companion_current_defense"] > player_data["companion_stored_defense"] else None)} | Speed: {color_text(player_data["companion_current_speed"],"green" if player_data["companion_current_speed"] > player_data["companion_stored_speed"] else None)}'
         )
-        # print(
-        #     f'Health: {player_data["companion_current_health"]}/{player_data["companion_max_health"]} | Attack: {player_data["companion_current_attack"]} | Defense: {player_data["companion_current_defense"]} | Speed: {player_data["companion_current_speed"]}'
-        # )
-        add_vertical_spaces(1)
-
-    if len(enemy_stats) == 2:
-        if enemy_stats[0]["display_name"] == enemy_stats[1]["display_name"]:
-            print(color_text(enemy_stats[0]["display_name"] + " A's stats:", "red"))
-            print(f'Health: {enemy_stats[0]["health"]}/{enemy_stats[0]["max_health"]}')
-            add_vertical_spaces(1)
-            print(color_text(enemy_stats[1]["display_name"] + " B's stats:", "red"))
-            print(f'Health: {enemy_stats[1]["health"]}/{enemy_stats[1]["max_health"]}')
-            add_vertical_spaces(1)
-        else:
-            for enemy in enemy_stats:
-                print(color_text(enemy["display_name"] + "'s stats:", "red"))
-                print(f'Health: {enemy["health"]}/{enemy["max_health"]}')
-                add_vertical_spaces(1)
-    else:
-        print(color_text(enemy_stats[0]["display_name"] + "'s stats:", "red"))
-        print(f'Health: {enemy_stats[0]["health"]}/{enemy_stats[0]["max_health"]}')
-        add_vertical_spaces(1)
+    print("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
+    add_vertical_spaces(1)
 
 
 def create_enemies_battle_stats(enemies_to_fight: list[str]):
@@ -323,9 +319,7 @@ def print_health_maxed_out(item_target_choice: str):
     print(color_text(item_target_choice + "'s health is maxed out", "cyan"))
 
 
-def print_item_target_buffed(
-    boost_value: int, stat_boosted: str, item_target_choice: str
-):
+def print_target_buffed(boost_value: int, stat_boosted: str, item_target_choice: str):
     print(
         color_text(
             f"{item_target_choice}'s {stat_boosted} stat was boosted by {boost_value}%",
@@ -370,6 +364,35 @@ def print_random_love_heal_action():
     random_action = random.choice(potential_actions)
 
     print(color_text(f"Your companion {random_action} to heal your soul...", "cyan"))
+
+
+def print_random_love_buff_action(random_stat: str):
+    if random_stat == "attack":
+        potential_actions = [
+            "let out a hearty war cry",
+            "urged you to work out more",
+            "handed you a protein shake",
+            "measured the circumference of your biceps",
+        ]
+    elif random_stat == "defend":
+        potential_actions = [
+            "polished your armor",
+            "reminded you to use good posture",
+            "told you to tighten your glutes",
+        ]
+    elif random_stat == "speed":
+        potential_actions = [
+            "tied your shoelaces",
+            "gave you a quick haircut",
+            "started a stop-watch",
+        ]
+
+    print(
+        color_text(
+            f"Your companion {random.choice(potential_actions)} to invigorate you...",
+            "magenta",
+        )
+    )
 
 
 def reset_all_buffs():
