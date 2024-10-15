@@ -103,6 +103,7 @@ def display_battle():
     print_battle_sprites_side_by_side(
         enemies_to_fight, "red", protags_to_fight, player_data["color"]
     )
+    add_vertical_spaces(1)
     if len(enemy_stats) == 2:
         if enemy_stats[0]["display_name"] == enemy_stats[1]["display_name"]:
             print(color_text(enemy_stats[0]["display_name"] + " A's stats:", "red"))
@@ -406,4 +407,18 @@ def reset_all_buffs():
     player_data["companion_current_defense"] = player_data["companion_stored_defense"]
     player_data["companion_current_speed"] = player_data["companion_stored_speed"]
 
+    save_player_data(player_data)
+
+
+def fifty_percent_player_and_companion_health():
+    player_data = reload_player_data()
+    if player_data["player_current_health"] == 0:
+        player_data["player_current_health"] = math.ceil(
+            player_data["player_max_health"] / 2
+        )
+    if player_data["is_companion_alive"] is False:
+        player_data["is_companion_alive"] = True
+        player_data["companion_current_health"] = math.ceil(
+            player_data["companion_max_health"] / 2
+        )
     save_player_data(player_data)

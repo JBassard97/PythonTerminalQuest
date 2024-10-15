@@ -19,7 +19,7 @@ from utils.battles.random_battle_operations import (
     companion_perform_attack,
     enemy_perform_attack,
     player_perform_use_item,
-    companion_perform_love
+    companion_perform_love,
 )
 from utils.helpers import color_text, add_vertical_spaces, press_space_to_continue
 
@@ -234,6 +234,10 @@ def random_battle_play_by_play(
 
         #! If it's the companion's move...
         if "companion_name" in move.keys():
+            player_data = reload_player_data()
+            if player_data["is_companion_alive"] is False:
+                continue
+
             if companion_choice == "attack":
                 display_battle()
                 add_vertical_spaces(1)
