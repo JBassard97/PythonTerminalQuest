@@ -1,9 +1,4 @@
-# from assets.battle_ascii_sprites import (
-#     battle_sprite_test_print,
-#     print_single_battle_sprite,
-#     print_battle_sprites_side_by_side,
-# )
-# from assets.large_ascii_sprites import large_sprite_test_print
+
 from dev.dev_funcs import dev_options
 from assets.sound_effects import play_async_audio
 from utils.logo import print_logo
@@ -156,8 +151,3 @@ start_game()
 
 # start_random_battle()
 
-# ? sprite test print funcs
-# battle_sprite_test_print()
-# print_single_battle_sprite("spider", "green")
-# print_battle_sprites_side_by_side(["scorpion", "spider"], "red", ["swordsman", "dog"], "blue")
-# large_sprite_test_print()

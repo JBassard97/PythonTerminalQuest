@@ -156,7 +156,7 @@ def display_battle():
         print(
             f'Health: {color_text(player_data["companion_current_health"], companion_health_color)}/{color_text(player_data["companion_max_health"], "green")} | Attack: {color_text(player_data["companion_current_attack"], "green" if player_data["companion_current_attack"] > player_data["companion_stored_attack"] else None)} | Defense: {color_text(player_data["companion_current_defense"], "green" if player_data["companion_current_defense"] > player_data["companion_stored_defense"] else None)} | Speed: {color_text(player_data["companion_current_speed"],"green" if player_data["companion_current_speed"] > player_data["companion_stored_speed"] else None)}'
         )
-    print("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
+    print("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
     add_vertical_spaces(1)
 
 

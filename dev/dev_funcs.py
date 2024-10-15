@@ -1,5 +1,7 @@
 from utils.helpers import reset_screen, add_vertical_spaces, clear_terminal
 from db.db_functions import save_player_data, reload_player_data
+from assets.battle_ascii_sprites import battle_sprite_test_print
+from assets.large_ascii_sprites import large_sprite_test_print
 
 
 def print_player_data_all(player_data: dict):
@@ -13,7 +15,14 @@ def dev_options(player_data: dict):
         print("DEV PORTAL")
         add_vertical_spaces(2)
 
-        dev_choices = ["view player_data", "change player_data", "total wipe", "exit"]
+        dev_choices = [
+            "view player_data",
+            "change player_data",
+            "battle_sprite test print",
+            "large_sprite test print",
+            "total wipe",
+            "exit",
+        ]
         for choice in dev_choices:
             print(choice)
         add_vertical_spaces(2)
@@ -24,6 +33,8 @@ def dev_options(player_data: dict):
         if dev_input == "view player_data":
             reset_screen()
             print_player_data_all(player_data)
+        elif dev_input == "battle_sprite test print":
+            reset_screen()
         elif dev_input == "exit":
             reset_screen()
             break  # This will exit the while loop and stop the infinite loop.

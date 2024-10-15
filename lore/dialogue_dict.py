@@ -8,7 +8,7 @@ def ct(text: str, color: str):
 
 dialogue_dict = {
     "series_1": {
-        "part_1": {
+        "part_1": { # Intro Story
             1: ct("Welcome to the kingdom of Pythonia...", "green"),
             2: ct(
                 "It is a massive sea-surrounded nation comprised of 5 realms.",
@@ -122,6 +122,7 @@ dialogue_dict = {
                 "The pair got dressed, filled their bags with anything they thought useful, and set out to begin their adventure...",
                 "cyan",
             ),
-        }
+        },
+        "part_2":{}
     }
 }
