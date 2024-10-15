@@ -26,7 +26,32 @@ item_data = {
             "number_of_uses": 1,
         },
     },
-    "buff_items": {},
+    "buff_items": {
+        "attack booster": {
+            "category": "buff_items",
+            "description": "A cinnamon-flavored liquid that boosts attack by 25%",
+            "attack_boost": 25,
+            "base_price": 35,
+            "resell_price": 25,
+            "number_of_uses": 1,
+        },
+        "defense booster": {
+            "category": "buff_items",
+            "description": "A banana-flavored liquid that boosts defense by 25%",
+            "defense_boost": 25,
+            "base_price": 35,
+            "resell_price": 25,
+            "number_of_uses": 1,
+        },
+        "speed booster": {
+            "category": "buff_items",
+            "description": "A coffee-flavored liquid that boosts speed by 25%",
+            "speed_boost": 25,
+            "base_price": 35,
+            "resell_price": 25,
+            "number_of_uses": 1,
+        },
+    },
     "battle_items": {
         "throwing knife": {
             "category": "battle_items",

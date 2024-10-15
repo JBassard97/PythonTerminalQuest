@@ -20,9 +20,10 @@ from utils.battles.battle_helpers import (
     print_item_target_healed,
     print_health_maxed_out,
     print_random_love_heal_action,
+    print_item_target_buffed,
 )
 import random
-
+import math
 from utils.helpers import color_text
 
 
@@ -135,6 +136,7 @@ def player_perform_use_item(item_choice: str, item_target_choice: str):
     player_data = reload_player_data()
     enemy_stats = reload_battle_data()
 
+    # ! If it's a heal item...
     if item_choice in item_data["heal_items"]:
         heal_value: int = item_data["heal_items"][item_choice]["heal_value"]
         print_item_target_healed(heal_value, item_target_choice)
@@ -159,9 +161,39 @@ def player_perform_use_item(item_choice: str, item_target_choice: str):
         player_data["item_inventory"].remove(item_choice)
         save_player_data(player_data)
 
+    # ! If it's a buff item...
     if item_choice in item_data["buff_items"]:
-        pass
+        if "attack_boost" in item_data["buff_items"][item_choice]:
+            stat_boosted = "attack"
+            boost = item_data["buff_items"][item_choice]["attack_boost"]
+        elif "defense_boost" in item_data["buff_items"][item_choice]:
+            stat_boosted = "defense"
+            boost = item_data["buff_items"][item_choice]["defense_boost"]
+        elif "speed_boost" in item_data["buff_items"][item_choice]:
+            stat_boosted = "speed"
+            boost = item_data["buff_items"][item_choice]["speed_boost"]
 
+        if item_target_choice == player_data["name"]:
+            stat_target = "current_" + stat_boosted
+            max_target = "player_max_" + stat_boosted
+        elif item_target_choice == player_data["companion_name"]:
+            stat_target = "companion_current_" + stat_boosted
+            max_target = "companion_max_" + stat_boosted
+
+        print_item_target_buffed(boost, stat_boosted, item_target_choice)
+
+        player_data[stat_target] = player_data[stat_target] + math.ceil(
+            player_data[stat_target] * (boost / 100)
+        )
+
+        # ? Preventing stat boosts from going beyond maximums
+        if player_data[stat_target] > player_data[max_target]:
+            player_data[stat_target] = player_data[max_target]
+
+        player_data["item_inventory"].remove(item_choice)
+        save_player_data(player_data)
+
+    # ! If it's a battle item
     # Battle Items ignore enemy defense and perform flat rate damages
     if item_choice in item_data["battle_items"]:
         damage_value = item_data["battle_items"][item_choice]["damage_value"]
@@ -197,7 +229,7 @@ def companion_perform_love():
         health_deficit = (
             player_data["player_max_health"] - player_data["player_current_health"]
         )
-        
+
         print_random_love_heal_action()
 
         if health_deficit == 0:
@@ -207,9 +239,8 @@ def companion_perform_love():
             print(
                 color_text(f"And helped you recover {random_recovery} health!", "green")
             )
-
-        player_data["player_current_health"] += random_recovery
-        save_player_data(player_data)
+            player_data["player_current_health"] += random_recovery
+            save_player_data(player_data)
 
     elif specific_love == "find item":
         findable_items = []

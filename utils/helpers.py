@@ -29,7 +29,11 @@ def graceful_exit():
     sys.exit()
 
 
-def color_text(text: str, color: str):
+def color_text(text: str, color: str = None):
+
+    if color is None:
+        return text
+
     color_codes = {
         "red": "\033[31m",
         "green": "\033[32m",

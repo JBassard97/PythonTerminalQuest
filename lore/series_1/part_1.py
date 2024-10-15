@@ -181,5 +181,14 @@ def add_starting_stats(player_data: dict):
         player_data["current_defense"] = 20  # LOW
         player_data["current_speed"] = 35  # SPEED
 
+    # ! Stored stats used to handle resetting buffs at battle end
+    player_data["player_stored_attack"] = player_data["current_attack"]
+    player_data["player_stored_defense"] = player_data["current_defense"]
+    player_data["player_stored_speed"] = player_data["current_speed"]
+
+    player_data["companion_stored_attack"] = player_data["companion_current_attack"]
+    player_data["companion_stored_defense"] = player_data["companion_current_defense"]
+    player_data["companion_stored_speed"] = player_data["companion_current_speed"]
+
     player_data["current_realm"] = "tutorial"
     return player_data

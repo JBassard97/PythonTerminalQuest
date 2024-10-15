@@ -9,6 +9,7 @@ from utils.helpers import (
 from utils.battles.battle_helpers import (
     create_enemies_battle_stats,
     create_enemies_to_fight,
+    reset_all_buffs,
 )
 from utils.battles.random_battle_logic import ask_random_battle_questions
 
@@ -30,18 +31,21 @@ def start_random_battle():
     battle_outcome = ask_random_battle_questions()
 
     if battle_outcome == "ran away":
+        reset_all_buffs()
         clear_battle_db()
         reset_screen()
         print(color_text("You successfully fled the battle!!!", "magenta"))
         add_vertical_spaces(1)
         press_space_to_continue()
     if battle_outcome == "win":
+        reset_all_buffs()
         clear_battle_db()
         reset_screen()
         print("You won the battle!")
         add_vertical_spaces(1)
         press_space_to_continue()
     if battle_outcome == "lose":
+        reset_all_buffs()
         clear_battle_db()
         reset_screen()
         print(
@@ -55,5 +59,3 @@ def start_random_battle():
 
 # def start_boss_battle(player_data: dict):
 #     print("BOSS BATTLE")
-
-

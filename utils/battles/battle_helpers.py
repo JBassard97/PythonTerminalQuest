@@ -4,10 +4,7 @@ from utils.helpers import (
     reset_screen,
     add_vertical_spaces,
 )
-from db.db_functions import (
-    reload_battle_data,
-    reload_player_data,
-)
+from db.db_functions import reload_battle_data, reload_player_data, save_player_data
 from db.enemy_db import enemy_data
 from db.item_db import item_data
 import random
@@ -108,8 +105,19 @@ def display_battle():
     )
     add_vertical_spaces(1)
     print(color_text(player_data["name"] + "'s stats:", player_data["color"]))
+    player_health_color = "green"
+    if player_data["player_current_health"] <= (
+        player_data["player_max_health"]
+        - math.ceil(player_data["player_max_health"] * 0.50)
+    ):
+        player_health_color = "yellow"
+    if player_data["player_current_health"] <= (
+        player_data["player_max_health"]
+        - math.ceil(player_data["player_max_health"] * 0.75)
+    ):
+        player_health_color = "red"
     print(
-        f'Health: {player_data["player_current_health"]}/{player_data["player_max_health"]} | Attack: {player_data["current_attack"]} | Defense: {player_data["current_defense"]} | Speed: {player_data["current_speed"]}'
+        f'Health: {color_text(player_data["player_current_health"], player_health_color)}/{color_text(player_data["player_max_health"], "green")} | Attack: {color_text(player_data["current_attack"], "green" if player_data["current_attack"] > player_data["player_stored_attack"] else None)} | Defense: {color_text(player_data["current_defense"], "green" if player_data["current_defense"] > player_data["player_stored_defense"] else None)} | Speed: {color_text(player_data["current_speed"],"green" if player_data["current_speed"] > player_data["player_stored_speed"] else None)}'
     )
     add_vertical_spaces(1)
     if player_data["is_companion_alive"]:
@@ -118,9 +126,23 @@ def display_battle():
                 player_data["companion_name"] + "'s stats:", player_data["color"]
             )
         )
+        companion_health_color = "green"
+        if player_data["companion_current_health"] <= (
+            player_data["companion_max_health"]
+            - math.ceil(player_data["companion_max_health"] * 0.50)
+        ):
+            companion_health_color = "yellow"
+        if player_data["companion_current_health"] <= (
+            player_data["companion_max_health"]
+            - math.ceil(player_data["companion_max_health"] * 0.75)
+        ):
+            companion_health_color = "red"
         print(
-            f'Health: {player_data["companion_current_health"]}/{player_data["companion_max_health"]} | Attack: {player_data["companion_current_attack"]} | Defense: {player_data["companion_current_defense"]} | Speed: {player_data["companion_current_speed"]}'
+            f'Health: {color_text(player_data["companion_current_health"], companion_health_color)}/{color_text(player_data["companion_max_health"], "green")} | Attack: {color_text(player_data["companion_current_attack"], "green" if player_data["companion_current_attack"] > player_data["companion_stored_attack"] else None)} | Defense: {color_text(player_data["companion_current_defense"], "green" if player_data["companion_current_defense"] > player_data["companion_stored_defense"] else None)} | Speed: {color_text(player_data["companion_current_speed"],"green" if player_data["companion_current_speed"] > player_data["companion_stored_speed"] else None)}'
         )
+        # print(
+        #     f'Health: {player_data["companion_current_health"]}/{player_data["companion_max_health"]} | Attack: {player_data["companion_current_attack"]} | Defense: {player_data["companion_current_defense"]} | Speed: {player_data["companion_current_speed"]}'
+        # )
         add_vertical_spaces(1)
 
     if len(enemy_stats) == 2:
@@ -301,6 +323,17 @@ def print_health_maxed_out(item_target_choice: str):
     print(color_text(item_target_choice + "'s health is maxed out", "cyan"))
 
 
+def print_item_target_buffed(
+    boost_value: int, stat_boosted: str, item_target_choice: str
+):
+    print(
+        color_text(
+            f"{item_target_choice}'s {stat_boosted} stat was boosted by {boost_value}%",
+            "cyan",
+        )
+    )
+
+
 def print_random_love_heal_action():
     potential_actions = [
         "gave you a warm hug",
@@ -320,7 +353,6 @@ def print_random_love_heal_action():
         "reminded you of home",
         "made fun of an enemy",
         "booped your nose",
-        "shrieked a hearty war cry",
         "performed a harmonica etude",
         "prayed to a higher power",
         "helped file your taxes",
@@ -338,3 +370,17 @@ def print_random_love_heal_action():
     random_action = random.choice(potential_actions)
 
     print(color_text(f"Your companion {random_action} to heal your soul...", "cyan"))
+
+
+def reset_all_buffs():
+    player_data = reload_player_data()
+
+    player_data["current_attack"] = player_data["player_stored_attack"]
+    player_data["current_defense"] = player_data["player_stored_defense"]
+    player_data["current_speed"] = player_data["player_stored_speed"]
+
+    player_data["companion_current_attack"] = player_data["companion_stored_attack"]
+    player_data["companion_current_defense"] = player_data["companion_stored_defense"]
+    player_data["companion_current_speed"] = player_data["companion_stored_speed"]
+
+    save_player_data(player_data)
