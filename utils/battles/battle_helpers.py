@@ -344,7 +344,6 @@ def print_random_love_heal_action():
         "knit you a sweater",
         "made you hot chocolate",
         "sang you a love song",
-        "cheered you on",
         "reminded you of home",
         "made fun of an enemy",
         "booped your nose",
@@ -359,7 +358,7 @@ def print_random_love_heal_action():
         "balanced your checkbook",
         "served you beef stew",
         "baked you bread",
-        "poured a warm glass of milk",
+        "poured you a glass of warm milk",
         "changed your car's oil",
     ]
     random_action = random.choice(potential_actions)
@@ -386,6 +385,7 @@ def print_random_love_buff_action(random_stat: str):
             "tied your shoelaces",
             "gave you a quick haircut",
             "started a stop-watch",
+            "cheered you on",
         ]
 
     print(
@@ -421,4 +421,19 @@ def fifty_percent_player_and_companion_health():
         player_data["companion_current_health"] = math.ceil(
             player_data["companion_max_health"] / 2
         )
+    save_player_data(player_data)
+
+
+def hundred_percent_player_and_companion_health():
+    player_data = reload_player_data()
+    player_data["player_current_health"] = player_data["player_max_health"]
+    player_data["is_companion_alive"] = True
+    player_data["companion_current_health"] = player_data["companion_max_health"]
+    save_player_data(player_data)
+
+
+def increment_battles_completed():
+    player_data = reload_player_data()
+    player_data["battles_completed_in_realm"] += 1
+    player_data["total_battles_completed"] += 1
     save_player_data(player_data)

@@ -1,4 +1,3 @@
-
 from dev.dev_funcs import dev_options
 from assets.sound_effects import play_async_audio
 from utils.logo import print_logo
@@ -22,6 +21,7 @@ from utils.start_questions import (
 from utils.battles.battles import start_random_battle
 from db.db_functions import save_player_data, reload_player_data, clear_player_db
 from lore.series_1.part_1 import dialogue_series_1_part_1, add_starting_stats
+from lore.series_1.part_2 import dialogue_series_1_part_2
 
 
 def start_game():
@@ -131,23 +131,28 @@ def get_player_info():
 
 
 def begin_adventure():
-    player_data = reload_player_data()
+    reset_screen()
+    while True:
+        # 
+        print("at the beginning of begin_adventure()")
+        # 
+        player_data = reload_player_data()
 
-    if "completed_stories" in player_data.keys():  # If Intro Story Complete...
-        if "intro_story" in player_data["completed_stories"]:
-            start_random_battle()
+        if "completed_stories" in player_data.keys():  # If Intro Story Complete...
+            if player_data["completed_stories"][-1] == "intro_story":
+                dialogue_series_1_part_2()
+            if player_data["completed_stories"][-1] == "met_wise_witch":
+                print("end of development")
+                break
 
-    else:  # Start Intro Story
-        dialogue_series_1_part_1(player_data)
-        # Start a list of completed story parts
-        player_data = add_starting_stats(player_data)
-        # print_dict_items(player_data)
-        save_player_data(player_data)
-
-    return
+        else:  # Start Intro Story
+            dialogue_series_1_part_1(player_data)
+            # Start a list of completed story parts
+            player_data = add_starting_stats(player_data)
+            # print_dict_items(player_data)
+            save_player_data(player_data)
 
 
 start_game()
 
 # start_random_battle()
-

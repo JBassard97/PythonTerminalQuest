@@ -11,6 +11,7 @@ from utils.battles.battle_helpers import (
     create_enemies_to_fight,
     reset_all_buffs,
     fifty_percent_player_and_companion_health,
+    increment_battles_completed,
 )
 from utils.battles.random_battle_logic import ask_random_battle_questions
 
@@ -44,6 +45,7 @@ def start_random_battle():
         press_space_to_continue()
     if battle_outcome == "win":
         battle_ended_ops()
+        increment_battles_completed()
         print("You won the battle!")
         add_vertical_spaces(1)
         press_space_to_continue()
