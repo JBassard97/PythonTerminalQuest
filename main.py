@@ -149,7 +149,6 @@ def begin_adventure():
             dialogue_series_1_part_1(player_data)
             # Start a list of completed story parts
             player_data = add_starting_stats(player_data)
-            # print_dict_items(player_data)
             save_player_data(player_data)
 
 

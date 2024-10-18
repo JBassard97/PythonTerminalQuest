@@ -18,14 +18,22 @@ from utils.battles.random_battle_logic import ask_random_battle_questions
 # from assets.sound_effects import play_async_audio
 
 
-def start_random_battle():
+def start_random_battle(scripted_enemies_list: list[str] = None):
 
     player_data = reload_player_data()
     fifty_percent_player_and_companion_health()
 
-    # List of possible enemies for the realm the player is in
-    enemy_possibilities: list[str] = list(enemy_data[player_data["current_realm"]])
-    enemies_to_fight: list[str] = create_enemies_to_fight(enemy_possibilities)
+    if scripted_enemies_list:
+        for index, enemy in enumerate(scripted_enemies_list):
+            if enemy not in enemy_data[player_data["current_realm"]]:
+                raise ValueError(
+                    f"scripted_enemies_list[{index}] is not available in current realm/does not exist"
+                )
+        enemies_to_fight = scripted_enemies_list
+    else:
+        # List of possible enemies for the realm the player is in
+        enemy_possibilities: list[str] = list(enemy_data[player_data["current_realm"]])
+        enemies_to_fight: list[str] = create_enemies_to_fight(enemy_possibilities)
 
     # ! Creates a list in battle_db storing all stats for each enemy
     save_battle_data(create_enemies_battle_stats(enemies_to_fight))
