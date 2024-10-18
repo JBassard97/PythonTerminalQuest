@@ -30,7 +30,7 @@ def dialogue_series_1_part_2():
     start_random_battle(["spider"])
     reset_screen()
     print("AHH EVEN MORE!")
-    start_random_battle(["spider", "spider"])
+    start_random_battle(["spider", "rat"])
     reset_screen()
     print(
         "thanks for killing the spiders. I'll replenish your health and give you some money and potions"

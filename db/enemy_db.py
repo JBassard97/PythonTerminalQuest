@@ -9,6 +9,15 @@ enemy_data = {
             "defense": 20,
             "speed": 20,
         },
+        "rat": {
+            "sprite_name": "rat",
+            "display_name": "Common Rat",
+            "max_health": 25,
+            "health": 25,
+            "attack": 15,
+            "defense": 25,
+            "speed": 20,
+        },
     },
     "ember_mountain": {
         "phoenix": {"sprite_name": "phoenix", "display_name": "Re-Alived Firebird"},
