@@ -150,6 +150,7 @@ def begin_adventure():
             # Start a list of completed story parts
             player_data = add_starting_stats(player_data)
             save_player_data(player_data)
+            wait_for_space_or_esc()
 
 
 start_game()

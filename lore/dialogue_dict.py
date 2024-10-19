@@ -1,4 +1,13 @@
 from utils.helpers import color_text
+from db.db_functions import reload_player_data
+
+player_data = reload_player_data()
+
+player_name: str = player_data["name"]
+companion_name: str = player_data["companion_name"]
+companion_type: str = player_data["companion_type"]
+player_color: str = player_data["color"]
+player_funds: int = player_data["current_funds"]
 
 
 # Abbreviated function name to make life easier
@@ -8,7 +17,7 @@ def ct(text: str, color: str):
 
 dialogue_dict = {
     "series_1": {
-        "part_1": { # Intro Story
+        "part_1": {  # Intro Story
             1: ct("Welcome to the kingdom of Pythonia...", "green"),
             2: ct(
                 "It is a massive sea-surrounded nation comprised of 5 realms.",
@@ -123,6 +132,31 @@ dialogue_dict = {
                 "cyan",
             ),
         },
-        "part_2":{}
+        "part_2": {
+            1: ct(
+                "The pair closes the door to their humble abode, and look out into the crowded market circle in front of them.",
+                "cyan",
+            ),
+            2: ct(
+                "The Pythonian town market has nearly everything: food, medicine, armor, weapons, and a few trinket stalls too.",
+                "green",
+            ),
+            3: ct(
+                f'"Hey {companion_name}, a quest like this comes once in a lifetime. I know we only have {player_funds} but..."',
+                player_color,
+            ),
+            4: ct(
+                "Wanna blow our pocket change on a few things or save it for later?",
+                player_color,
+            ),
+            "5a": ct(
+                f"{companion_name} shakes their head and opts for frugality. Such a wise {companion_type}!",
+                "red",
+            ),
+            "5b": ct(
+                f"{companion_name} eagerly nods their head. Better to live it large now and reap the benefits later!",
+                "green",
+            ),
+        },
     }
 }

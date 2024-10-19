@@ -109,6 +109,7 @@ def dialogue_series_1_part_1(player_data: dict):
     print(dialogue_portion[31])
     add_vertical_spaces(3)
     press_space_to_continue()
+    reset_screen()
 
 
 # Player_data will be run through this function to add fields after completing intro_story
