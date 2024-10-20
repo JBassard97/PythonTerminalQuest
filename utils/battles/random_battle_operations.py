@@ -25,7 +25,7 @@ from utils.battles.battle_helpers import (
 )
 import random
 import math
-from utils.helpers import color_text
+from utils.helpers import color_text, percent_chance_true
 
 
 #! ATTACK
@@ -43,6 +43,10 @@ def player_perform_attack(
         enemy_stats, enemy_index, is_enemy_a_defending, is_enemy_b_defending
     )
     true_damage = calculate_true_damage(raw_damage, enemy_defense)
+
+    #! Critical Hit
+    if percent_chance_true(player_data["player_critical_percent"]):
+        true_damage = true_damage + (true_damage * 0.50)
 
     print_true_damage_to_enemy(enemy_stats, player_attack_target, true_damage)
 
@@ -71,6 +75,10 @@ def companion_perform_attack(
         enemy_stats, enemy_index, is_enemy_a_defending, is_enemy_b_defending
     )
     true_damage = calculate_true_damage(raw_damage, enemy_defense)
+
+    #! Critical Hit
+    if percent_chance_true(player_data["companion_critical_percent"]):
+        true_damage = true_damage + (true_damage * 0.50)
 
     print_true_damage_to_enemy(enemy_stats, companion_attack_target, true_damage)
     enemy_stats[enemy_index]["health"] -= true_damage
@@ -107,6 +115,9 @@ def enemy_perform_attack(
         player_data, enemy_attack_target, is_player_defending, is_companion_defending
     )
     true_damage = calculate_true_damage(raw_damage, target_defense)
+
+    if percent_chance_true(10): #! Critical Hit
+        true_damage = true_damage + (true_damage * 0.50)
 
     print_true_damage_to_player_or_companion(enemy_attack_target, true_damage)
 

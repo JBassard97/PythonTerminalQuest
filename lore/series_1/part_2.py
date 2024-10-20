@@ -55,5 +55,5 @@ def dialogue_series_1_part_2():
     # player_data["completed_stories"].append("met_wise_witch")
     save_player_data(player_data)
 
-    add_vertical_spaces(1)
-    press_space_to_continue()
+    # add_vertical_spaces(1)
+    # press_space_to_continue()

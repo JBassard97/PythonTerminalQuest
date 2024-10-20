@@ -1,6 +1,7 @@
 import os
 import sys
 import keyboard
+import random
 from assets.sound_effects import play_async_audio
 
 
@@ -101,3 +102,11 @@ def convert_to_dict(
     }
 
     return player_save
+
+
+def percent_chance_true(percent: int):
+    percent = percent / 100
+    if random.random() <= percent:
+        return True
+    else:
+        return False

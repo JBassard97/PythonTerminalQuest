@@ -130,11 +130,13 @@ def add_starting_stats(player_data: dict):
     player_data["player_max_attack"] = 100
     player_data["player_max_defense"] = 100
     player_data["player_max_speed"] = 100
+    player_data["player_critical_percent"] = 5
 
     player_data["companion_max_health"] = 50
     player_data["companion_max_attack"] = 100
     player_data["companion_max_defense"] = 100
     player_data["companion_max_speed"] = 100
+    player_data["companion_critical_percent"] = 5
 
     player_data["companion_current_health"] = 50
     player_data["companion_current_attack"] = 10
