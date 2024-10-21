@@ -47,6 +47,7 @@ def player_perform_attack(
     #! Critical Hit
     if percent_chance_true(player_data["player_critical_percent"]):
         true_damage = true_damage + (true_damage * 0.50)
+        print("Critical Hit!")
 
     print_true_damage_to_enemy(enemy_stats, player_attack_target, true_damage)
 
@@ -79,6 +80,8 @@ def companion_perform_attack(
     #! Critical Hit
     if percent_chance_true(player_data["companion_critical_percent"]):
         true_damage = true_damage + (true_damage * 0.50)
+        print("Critical Hit!")
+
 
     print_true_damage_to_enemy(enemy_stats, companion_attack_target, true_damage)
     enemy_stats[enemy_index]["health"] -= true_damage
@@ -118,6 +121,8 @@ def enemy_perform_attack(
 
     if percent_chance_true(10): #! Critical Hit
         true_damage = true_damage + (true_damage * 0.50)
+        print("Critical Hit!")
+
 
     print_true_damage_to_player_or_companion(enemy_attack_target, true_damage)
 

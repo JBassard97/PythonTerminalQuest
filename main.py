@@ -141,6 +141,9 @@ def begin_adventure():
         if "completed_stories" in player_data.keys():  # If Intro Story Complete...
             if player_data["completed_stories"][-1] == "intro_story":
                 dialogue_series_1_part_2()
+            # 
+            break # for now
+            # 
             if player_data["completed_stories"][-1] == "met_wise_witch":
                 print("end of development")
                 break

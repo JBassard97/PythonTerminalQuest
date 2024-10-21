@@ -6,7 +6,7 @@ buff_items: dict[dict] = item_data["buff_items"]
 battle_items: dict[dict] = item_data["battle_items"]
 
 shop_data = {
-    "tutorial": {"Morsel Vendor": {}, "Apothecary": {}, "Armory": {}, "Qurios": {}},
+    "tutorial": {"morsel vendor": {}, "apothecary": {}, "armory": {}, "qurios": {}},
     "lushgrove": {},
     "cinderdune": {},
     "riverfall": {},

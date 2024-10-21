@@ -7,7 +7,6 @@ from utils.helpers import (
     add_vertical_spaces,
 )
 from db.db_functions import reload_player_data, save_player_data
-from db.shop_db import shop_data
 from utils.battles.battles import start_random_battle
 from utils.battles.battle_helpers import hundred_percent_player_and_companion_health
 from lore.dialogue_dict import dialogue_dict
@@ -15,11 +14,10 @@ from lore.dialogue_helpers import (
     print_large_sprite_with_buffer,
     print_multiple_dialogues,
 )
-from lore.series_1.questions import ask_go_shopping
+from utils.shop_logic import ask_go_shopping, ask_which_shop, go_to_shop
 
 
 def dialogue_series_1_part_2():
-    player_data = reload_player_data()
     dialogue_portion = dialogue_dict["series_1"]["part_2"]
 
     reset_screen()
@@ -27,11 +25,17 @@ def dialogue_series_1_part_2():
     add_vertical_spaces(1)
     shopping_decision = ask_go_shopping()
     reset_screen()
-    if shopping_decision:
+    if shopping_decision:  #! They Go Shopping $$$
         print(dialogue_portion["5b"])
-        available_shops = shop_data[player_data["current_realm"]].keys()
-        print(available_shops)
-    else:  #! They Go Shopping $$$
+        add_vertical_spaces(1)
+        shop_choice: str = ask_which_shop()
+        reset_screen()
+        if shop_choice == "back":  #! They Change Their Minds
+            pass  # TODO: PLACEHOLDER
+        else:  #! They Save Their $$$
+            go_to_shop(shop_choice)
+        add_vertical_spaces(1)
+    else:
         print(dialogue_portion["5a"])
         add_vertical_spaces(1)
     press_space_to_continue()
@@ -47,6 +51,7 @@ def dialogue_series_1_part_2():
     #     "thanks for killing the spiders. I'll replenish your health and give you some money and potions"
     # )
 
+    player_data = reload_player_data()
     hundred_percent_player_and_companion_health()
     player_data["battles_completed_in_realm"] = 0
     # player_data["current_realm"] = "lushgrove"
@@ -56,4 +61,4 @@ def dialogue_series_1_part_2():
     save_player_data(player_data)
 
     # add_vertical_spaces(1)
-    # press_space_to_continue()
+    press_space_to_continue()
