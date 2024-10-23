@@ -1,8 +1,15 @@
 item_data = {
     "quest_items": {
+        "Handmade Doll": {
+            "description": "A doll made with hair made from horse tails, cute but a little creepy",
+            "base_price": 25,
+            "resell_price": 20,
+        },
         "Golden Crucifix": {
-            "description": "A small golden cross adorned with rubies and sapphires, might come in handy later"
-        }
+            "description": "A small golden cross adorned with rubies and sapphires, might come in handy later",
+            "base_price": 1000,
+            "resell_price": 2000,
+        },
     },
     "heal_items": {
         #! --------------Medicine------------------
@@ -12,7 +19,6 @@ item_data = {
             "heal_value": 20,
             "base_price": 10,
             "resell_price": 7,
-            "number_of_uses": 1,
         },
         "potion+": {
             "category": "heal_items",
@@ -20,7 +26,6 @@ item_data = {
             "heal_value": 50,
             "base_price": 25,
             "resell_price": 20,
-            "number_of_uses": 1,
         },
         "potion++": {
             "category": "heal_items",
@@ -28,7 +33,6 @@ item_data = {
             "heal_value": 100,
             "base_price": 50,
             "resell_price": 40,
-            "number_of_uses": 1,
         },
         #! ----------------Food-------------------
         "slice of rosemary bread": {
@@ -37,7 +41,6 @@ item_data = {
             "heal_value": 5,
             "base_price": 5,
             "resell_price": 2,
-            "number_of_uses": 1,
         },
         "corn on the cob": {
             "category": "heal_items",
@@ -45,7 +48,6 @@ item_data = {
             "heal_value": 10,
             "base_price": 10,
             "resell_price": 7,
-            "number_of_uses": 1,
         },
         "chicken kabob": {
             "category": "heal_items",
@@ -53,7 +55,6 @@ item_data = {
             "heal_value": 15,
             "base_price": 15,
             "resell_price": 9,
-            "number_of_uses": 1,
         },
     },
     "buff_items": {
@@ -63,7 +64,6 @@ item_data = {
             "attack_boost": 25,
             "base_price": 35,
             "resell_price": 25,
-            "number_of_uses": 1,
         },
         "defense booster": {
             "category": "buff_items",
@@ -71,7 +71,6 @@ item_data = {
             "defense_boost": 25,
             "base_price": 35,
             "resell_price": 25,
-            "number_of_uses": 1,
         },
         "speed booster": {
             "category": "buff_items",
@@ -79,7 +78,6 @@ item_data = {
             "speed_boost": 25,
             "base_price": 35,
             "resell_price": 25,
-            "number_of_uses": 1,
         },
     },
     "battle_items": {
@@ -89,7 +87,6 @@ item_data = {
             "damage_value": 20,
             "base_price": 20,
             "resell_price": 15,
-            "number_of_uses": 1,
         }
     },
     "weapons": {

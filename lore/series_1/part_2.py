@@ -28,13 +28,8 @@ def dialogue_series_1_part_2():
     if shopping_decision:  #! They Go Shopping $$$
         print(dialogue_portion["5b"])
         add_vertical_spaces(1)
-        shop_choice: str = ask_which_shop()
-        reset_screen()
-        if shop_choice == "back":  #! They Change Their Minds
-            pass  # TODO: PLACEHOLDER
-        else:  #! They Save Their $$$
-            go_to_shop(shop_choice)
-        add_vertical_spaces(1)
+        ask_which_shop()
+        print("you are finished shopping")
     else:
         print(dialogue_portion["5a"])
         add_vertical_spaces(1)
@@ -61,4 +56,4 @@ def dialogue_series_1_part_2():
     save_player_data(player_data)
 
     # add_vertical_spaces(1)
-    press_space_to_continue()
+    # press_space_to_continue()
