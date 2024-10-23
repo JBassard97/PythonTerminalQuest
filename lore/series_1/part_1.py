@@ -148,7 +148,9 @@ def add_starting_stats(player_data: dict):
     if weapon_class == "archer":  #! If Archer...
         player_data["current_weapon"] = {
             "name": "Basic Hunter Bow",
+            "description": "A bow fit for feeding your family with wild squirrels",
             "base_damage": 10,
+            "resell_price": 5,
         }
         player_data["current_attack"] = 20  # LOW
         player_data["current_defense"] = 35  # MID
@@ -156,7 +158,9 @@ def add_starting_stats(player_data: dict):
     if weapon_class == "swordsman":  #! If Swordsman
         player_data["current_weapon"] = {
             "name": "Inherited Blunt Sword",
+            "description": "A sword passed down in your family, has seen some battles",
             "base_damage": 10,
+            "resell_price": 5,
         }
         player_data["current_attack"] = 35  # MID
         player_data["current_defense"] = 50  # HIGH (because they have a shield)
@@ -164,7 +168,9 @@ def add_starting_stats(player_data: dict):
     if weapon_class == "magician":  #! If Magician...
         player_data["current_weapon"] = {
             "name": "Lushgrove Tree Branch",
+            "description": "An ordinary branch that has been blessed for magic casting",
             "base_damage": 10,
+            "resell_price": 5,
         }
         player_data["current_attack"] = 50  # HIGH
         player_data["current_defense"] = 20  # LOW
