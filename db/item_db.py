@@ -5,6 +5,7 @@ item_data = {
         }
     },
     "heal_items": {
+        #! --------------Medicine------------------
         "potion": {
             "category": "heal_items",
             "description": "Recovers 20 health",
@@ -27,6 +28,31 @@ item_data = {
             "heal_value": 100,
             "base_price": 50,
             "resell_price": 40,
+            "number_of_uses": 1,
+        },
+        #! ----------------Food-------------------
+        "slice of rosemary bread": {
+            "category": "heal_items",
+            "description": "A single, hearty slice of local rosemary bread, recovers 5 health",
+            "heal_value": 5,
+            "base_price": 5,
+            "resell_price": 2,
+            "number_of_uses": 1,
+        },
+        "corn on the cob": {
+            "category": "heal_items",
+            "description": "Lightly charred in a fire, yet glistening with butter, recovers 10 health",
+            "heal_value": 10,
+            "base_price": 10,
+            "resell_price": 7,
+            "number_of_uses": 1,
+        },
+        "chicken kabob": {
+            "category": "heal_items",
+            "description": "Seasoned chicken chunks on a skewer, recovers 15 health",
+            "heal_value": 15,
+            "base_price": 15,
+            "resell_price": 9,
             "number_of_uses": 1,
         },
     },
@@ -73,8 +99,15 @@ item_data = {
                 "description": "A common archery set given to Royal Guard archers on their first day",
                 "base_damage": 15,
                 "base_price": 50,
-                "resell_price": 35,
-            }
+                "resell_price": 50,
+            },
+            "Proven Hunter's Bow": {
+                "name": "Proven Hunter's Bow",
+                "description": "A bow fit for hunting larger game, like wild boar and deer",
+                "base_damage": 20,
+                "base_price": 75,
+                "resell_price": 75,
+            },
         },
         "swordsman": {
             "Royal Guard's Training Sword": {
@@ -83,7 +116,14 @@ item_data = {
                 "base_damage": 15,
                 "base_price": 50,
                 "resell_price": 35,
-            }
+            },
+            "Self-Defense Blade": {
+                "name": "Self-Defense Blade",
+                "description": "A 12-inch blade that is easily concealable, yet perfect for close combat",
+                "base_damage": 20,
+                "base_price": 75,
+                "resell_price": 50,
+            },
         },
         "magician": {
             "Court Magician Apprentice Wand": {
@@ -92,7 +132,14 @@ item_data = {
                 "base_damage": 15,
                 "base_price": 50,
                 "resell_price": 35,
-            }
+            },
+            "Spell-Caster 1000": {
+                "name": "Spell-Caster 1000",
+                "description": 'The first model in the "Spell-Caster" series, perfect for practicing basic magic commands',
+                "base_damage": 20,
+                "base_price": 75,
+                "resell_price": 50,
+            },
         },
     },
 }

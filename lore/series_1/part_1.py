@@ -168,7 +168,7 @@ def add_starting_stats(player_data: dict):
     if weapon_class == "magician":  #! If Magician...
         player_data["current_weapon"] = {
             "name": "Lushgrove Tree Branch",
-            "description": "An ordinary branch that has been blessed for magic casting",
+            "description": "An ordinary branch that has been blessed for minor magic casting",
             "base_damage": 10,
             "resell_price": 5,
         }
