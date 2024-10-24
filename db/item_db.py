@@ -106,6 +106,7 @@ item_data = {
     "weapons": {
         "archer": {
             "royal guard's training bow": {
+                "category": "weapons",
                 "name": "Royal Guard's Training Bow",
                 "description": "A common archery set given to Royal Guard archers on their first day",
                 "base_damage": 15,
@@ -113,6 +114,7 @@ item_data = {
                 "resell_price": 50,
             },
             "proven hunter's bow": {
+                "category": "weapons",
                 "name": "Proven Hunter's Bow",
                 "description": "A bow fit for hunting larger game, like wild boar and deer",
                 "base_damage": 20,
@@ -122,6 +124,7 @@ item_data = {
         },
         "swordsman": {
             "royal guard's training sword": {
+                "category": "weapons",
                 "name": "Royal Guard's Training Sword",
                 "description": "A common sword and shield set given to Royal Guard swordsmen on their first day",
                 "base_damage": 15,
@@ -129,15 +132,17 @@ item_data = {
                 "resell_price": 35,
             },
             "hunting blade": {
+                "category": "weapons",
                 "name": "Hunting Blade",
                 "description": "A 12-inch blade that is easily concealable, yet perfect for close combat",
                 "base_damage": 20,
-                "base_price": 200,
+                "base_price": 75,
                 "resell_price": 50,
             },
         },
         "magician": {
             "court magician apprentice wand": {
+                "category": "weapons",
                 "name": "Court Magician Apprentice Wand",
                 "description": "A simple wand made of polished wood given to the apprentices of Court Magicians",
                 "base_damage": 15,
@@ -145,6 +150,7 @@ item_data = {
                 "resell_price": 35,
             },
             "spell-caster 1000": {
+                "category": "weapons",
                 "name": "Spell-Caster 1000",
                 "description": 'The first model in the "Spell-Caster" series, perfect for practicing basic magic commands',
                 "base_damage": 20,

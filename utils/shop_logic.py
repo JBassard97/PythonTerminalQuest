@@ -5,7 +5,7 @@ from utils.helpers import (
     reset_screen,
 )
 from db.shop_db import shop_data
-from db.db_functions import reload_player_data
+from db.db_functions import reload_player_data, save_player_data
 
 
 def print_current_funds():
@@ -13,6 +13,15 @@ def print_current_funds():
     print(
         color_text(f"You currently have {player_data['current_funds']} gold", "yellow")
     )
+    add_vertical_spaces(1)
+
+
+def print_details(item: dict, is_weapon=False):
+    print(color_text(item["name"], "cyan", "underline"))
+    print(color_text(item["description"], "blue"))
+    if is_weapon:
+        print(color_text(f'Base Damage: {item["base_damage"]}', "red"))
+    print(color_text(f'Cost: {item["base_price"]} Gold', "yellow"))
     add_vertical_spaces(1)
 
 
@@ -24,21 +33,6 @@ def print_available_shops(available_shops: list[str]):
     add_vertical_spaces(1)
     print(color_text("Which shop would you like to visit?", "yellow"))
     print(color_text('Or enter "Back" to change your mind', "yellow"))
-    add_vertical_spaces(1)
-
-
-def print_weapon_details(weapon: dict):
-    print(color_text(weapon["name"], "cyan", "underline"))
-    print(color_text(weapon["description"], "blue"))
-    print(color_text(f'Base Damage: {weapon["base_damage"]}', "red"))
-    print(color_text(f'Cost: {weapon["base_price"]} Gold', "yellow"))
-    add_vertical_spaces(1)
-
-
-def print_item_details(item: dict):
-    print(color_text(item["name"], "cyan", "underline"))
-    print(color_text(item["description"], "blue"))
-    print(color_text(f'Cost: {item["base_price"]} Gold', "yellow"))
     add_vertical_spaces(1)
 
 
@@ -55,31 +49,29 @@ def ask_go_shopping():
 
 def ask_which_shop():
     player_data = reload_player_data()
-    available_shops: list[str] = shop_data[player_data["current_realm"]].keys()
+    available_shops = shop_data[player_data["current_realm"]].keys()
 
     while True:
         reset_screen()
         print_current_funds()
-        print_available_shops(available_shops)
+        print_available_shops(list(available_shops))
 
         shop_input = input().strip().lower()
         if shop_input == "back":
             return
         elif shop_input in available_shops:
-            shop_outcome = go_to_shop(shop_input)
-            if shop_outcome == "back":
+            if go_to_shop(shop_input) == "back":
                 continue
 
 
 def go_to_shop(shop_choice: str):
     player_data = reload_player_data()
-    current_shop: dict = shop_data[player_data["current_realm"]][shop_choice]
+    current_shop = shop_data[player_data["current_realm"]][shop_choice]
     current_items = current_shop["items"]
 
     valid_choices = ["buy", "sell", "back"]
 
     while True:
-        player_data = reload_player_data()
         reset_screen()
         print(
             color_text(
@@ -90,102 +82,150 @@ def go_to_shop(shop_choice: str):
         for choice in valid_choices:
             print(color_text(choice.capitalize(), "green"))
         add_vertical_spaces(1)
-        shop_action: str = input().strip().lower()
-        if shop_action in valid_choices:
-            if shop_action == "back":
-                return "back"
 
-            elif shop_action == "buy":
-                while True:
-                    purchasable_items = []
-                    purchasable_item_names = []
+        shop_action = input().strip().lower()
+        if shop_action == "back":
+            return "back"
 
+        elif shop_action == "buy":
+            handle_buying(current_items)
+
+        elif shop_action == "sell":
+            handle_selling()
+
+
+def handle_buying(current_items):
+    player_data = reload_player_data()
+    plural_class = {
+        "archer": "archers",
+        "swordsman": "swordsmen",
+        "magician": "magicians",
+    }
+
+    while True:
+        purchasable_items, purchasable_item_names = [], []
+
+        reset_screen()
+        print_current_funds()
+
+        if isinstance(current_items, dict):  # Weapon shop
+            print(
+                color_text(
+                    f"Here are the weapons available to {plural_class[player_data['weapon_class']]}:",
+                    "magenta",
+                )
+            )
+            add_vertical_spaces(1)
+            current_weapons = current_items["weapons"][player_data["weapon_class"]]
+            for weapon in current_weapons:
+                print_details(weapon, is_weapon=True)
+                purchasable_items.append(weapon)
+                purchasable_item_names.append(weapon["name"].lower())
+
+            print(color_text("We also sell:", "magenta"))
+            add_vertical_spaces(1)
+            if "other" in current_items:
+                for other in current_items["other"]:
+                    print_details(other)
+                    purchasable_items.append(other)
+                    purchasable_item_names.append(other["name"].lower())
+
+        else:  # General shop
+            print(color_text("Here is what we have in stock:", "magenta"))
+            add_vertical_spaces(1)
+            for item in current_items:
+                print_details(item)
+                purchasable_items.append(item)
+                purchasable_item_names.append(item["name"].lower())
+
+        print(color_text("What would you like to buy?", "yellow"))
+        print(color_text('Or enter "Back" to change your mind', "yellow"))
+        add_vertical_spaces(1)
+
+        purchase_input = input().strip().lower()
+        if purchase_input == "back":
+            break
+        elif purchase_input in purchasable_item_names:
+            purchase_item(
+                purchasable_items[purchasable_item_names.index(purchase_input)],
+            )
+
+
+def purchase_item(item: dict):
+    player_data = reload_player_data()
+    reset_screen()
+    if player_data["current_funds"] < item["base_price"]:
+        print(color_text("You don't have the funds for that item!", "red", "underline"))
+        press_space_to_continue()
+    else:
+        while True:
+            print_current_funds()
+            print(
+                color_text(
+                    f"Are you sure you want to buy the {item['name']} for {item['base_price']} Gold?",
+                    "cyan",
+                )
+            )
+            print(color_text("Enter Yes or No:", "yellow"))
+            add_vertical_spaces(1)
+
+            confirm_purchase = input().strip().lower()
+            if confirm_purchase in ["yes", "no"]:
+                if confirm_purchase == "yes":
                     reset_screen()
-                    print_current_funds()
-
-                    if isinstance(
-                        current_items, dict
-                    ):  #! If it's a dict, then it's a weapon shop
-                        plural_class = {
-                            "archer": "archers",
-                            "swordsman": "swordsmen",
-                            "magician": "magicians",
-                        }
-                        print(
-                            color_text(
-                                f"Here are the weapons specifically available to {plural_class[player_data['weapon_class']]}:",
-                                "magenta",
-                            )
-                        )
-                        add_vertical_spaces(1)
-                        current_weapons = current_items["weapons"][
-                            player_data["weapon_class"]
-                        ]
-                        for weapon in current_weapons:
-                            print_weapon_details(weapon)
-                            purchasable_items.append(weapon)
-                            purchasable_item_names.append(weapon["name"].lower())
-
-                        print(color_text("We also sell:", "magenta"))
-                        add_vertical_spaces(1)
-                        if "other" in current_items.keys():
-                            current_others = current_items["other"]
-                            for other in current_others:
-                                print_item_details(other)
-                                purchasable_items.append(other)
-                                purchasable_item_names.append(other["name"].lower())
-
-                    else:  #! If it's not a dict, it's any other shop
-                        print(color_text("Here is what we have in stock:", "magenta"))
-                        for item in current_items:
-                            print_item_details(item)
-                            purchasable_items.append(item)
-                            purchasable_item_names.append(item["name"].lower())
-
-                    print(color_text("What would you like to buy?", "yellow"))
-                    print(color_text('Or enter "Back" to change your mind', "yellow"))
+                    player_data["current_funds"] -= item["base_price"]
+                    print(color_text(f"You purchased the {item['name']}!", "green"))
                     add_vertical_spaces(1)
-                    purchase_input = input().strip().lower()
-                    if purchase_input == "back":
-                        break
-                    elif purchase_input in purchasable_item_names:
-                        purchase_index = purchasable_item_names.index(purchase_input)
-                        purchase_dict = purchasable_items[purchase_index]
-                        reset_screen()
-                        if player_data["current_funds"] < purchase_dict["base_price"]:
+                    press_space_to_continue()
+                    if item["category"] == "weapons":
+                        while True:
+                            reset_screen()
                             print(
                                 color_text(
-                                    "You don't have the funds for that item!",
+                                    "You cannot wield 2 weapons at once, though...",
                                     "red",
-                                    "underline",
                                 )
                             )
-                            press_space_to_continue()
-                            break
-                        else:
-                            while True:
-                                print_current_funds()
-                                print(
-                                    color_text(
-                                        f"Are you sure you want to buy the {purchase_dict['name']} for {purchase_dict['base_price']} Gold?",
-                                        "cyan",
-                                    )
+                            add_vertical_spaces(1)
+                            print(
+                                color_text(
+                                    f"Would you like to sell your {player_data['current_weapon']['name']} for {player_data['current_weapon']['resell_price']} Gold or store it for later?"
                                 )
-                                print(color_text("Enter Yes or No:", "yellow"))
+                            )
+                            print(color_text('Enter "Sell It" or "Store It":'))
+                            old_weapon_input = input().strip().lower()
+                            if old_weapon_input in ["sell it", "store it"]:
+                                reset_screen()
+                                if old_weapon_input == "store it":
+                                    player_data["stored_weapons"].append(item)
+                                    print(
+                                        color_text(
+                                            f"You had your previous weapon stored and equipped the {item['name']}!",
+                                            "blue",
+                                        )
+                                    )
+                                else:
+                                    player_data["current_funds"] += player_data[
+                                        "current_weapon"
+                                    ]["resell_price"]
+                                    print(
+                                        color_text(
+                                            f"You sold your previous weapon and equipped the {item['name']}!",
+                                            "blue",
+                                        )
+                                    )
+                                player_data["current_weapon"] = item
+                                save_player_data(player_data)
                                 add_vertical_spaces(1)
-                                valid_responses = ["yes", "no"]
-                                confirm_purchase = input().strip().lower()
-                                if confirm_purchase in valid_responses:
-                                    if confirm_purchase == "yes":
-                                        print("you gonna buy the thing")
-                                        press_space_to_continue()
-                                        break
-                                    else:
-                                        break
+                                press_space_to_continue()
+                                return
 
-            elif shop_action == "sell":
-                pass
-                # reset_screen()
-                # print_current_funds()
-                # print("what are you selling?")
-                # press_space_to_continue()
+                    else:
+                        pass
+                press_space_to_continue()
+                break
+
+
+def handle_selling():
+    player_data = reload_player_data()
+    pass
