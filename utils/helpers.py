@@ -30,7 +30,7 @@ def graceful_exit():
     sys.exit()
 
 
-def color_text(text: str, color: str = None):
+def color_text(text: str, color: str = None, extra: str = None):
 
     if color is None:
         return text
@@ -45,13 +45,20 @@ def color_text(text: str, color: str = None):
         # Add other colors as needed
     }
 
+    extra_codes = {"underline": "\033[4m"}
+
     if color.lower() not in color_codes:
-        raise ValueError("Unsupported color")
+        raise ValueError("Unsupported color value")
 
     ansi_code = color_codes[color.lower()]
     reset_code = "\033[0m"
-
-    return f"{ansi_code}{text}{reset_code}"
+    if extra is not None:
+        if extra.lower() not in extra_codes:
+            raise ValueError("Unsupported extra value")
+        extra_code = extra_codes[extra.lower()]
+        return f"{extra_code}{ansi_code}{text}{reset_code}"
+    else:
+        return f"{ansi_code}{text}{reset_code}"
 
 
 def wait_for_space_or_esc():

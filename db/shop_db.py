@@ -28,21 +28,24 @@ shop_data = {
         },
         "armory": {
             "items": {
-                "archer": [
-                    archer_weapons["Royal Guard's Training Bow"],
-                    archer_weapons["Proven Hunter's Bow"],
-                ],
-                "swordsman": [
-                    swordsman_weapons["Royal Guard's Training Sword"],
-                    swordsman_weapons["Self-Defense Blade"],
-                ],
-                "magician": [
-                    magician_weapons["Court Magician Apprentice Wand"],
-                    magician_weapons["Spell-Caster 1000"],
-                ],
+                "weapons": {
+                    "archer": [
+                        archer_weapons["royal guard's training bow"],
+                        archer_weapons["proven hunter's bow"],
+                    ],
+                    "swordsman": [
+                        swordsman_weapons["royal guard's training sword"],
+                        swordsman_weapons["hunting blade"],
+                    ],
+                    "magician": [
+                        magician_weapons["court magician apprentice wand"],
+                        magician_weapons["spell-caster 1000"],
+                    ],
+                },
+                "other": [battle_items["throwing knife"]],
             }
         },
-        "qurios": {"items": [quest_items["Handmade Doll"]]},
+        "qurios": {"items": [quest_items["handmade doll"]]},
     },
     "lushgrove": {},
     "cinderdune": {},

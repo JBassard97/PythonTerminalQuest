@@ -142,11 +142,11 @@ dialogue_dict = {
                 "green",
             ),
             3: ct(
-                f'"Hey {companion_name}, a quest like this comes once in a lifetime. I know we only have {player_funds} gold, but..."',
+                f'"Hey {companion_name}, a quest like this comes once in a lifetime."',
                 player_color,
             ),
             4: ct(
-                "Wanna blow our pocket change on a few things or save it for later?",
+                "Wanna blow our pocket change on a few things now or save it for later?",
                 player_color,
             ),
             "5a": ct(

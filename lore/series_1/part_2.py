@@ -21,7 +21,9 @@ def dialogue_series_1_part_2():
     dialogue_portion = dialogue_dict["series_1"]["part_2"]
 
     reset_screen()
-    print_multiple_dialogues(dialogue_portion, 1, 5)
+    print_multiple_dialogues(dialogue_portion, 1, 3)
+    add_vertical_spaces(1)
+    print_multiple_dialogues(dialogue_portion, 3, 5)
     add_vertical_spaces(1)
     shopping_decision = ask_go_shopping()
     reset_screen()
@@ -29,6 +31,7 @@ def dialogue_series_1_part_2():
         print(dialogue_portion["5b"])
         add_vertical_spaces(1)
         ask_which_shop()
+        reset_screen()
         print("you are finished shopping")
     else:
         print(dialogue_portion["5a"])
