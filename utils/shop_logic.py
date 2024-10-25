@@ -5,6 +5,7 @@ from utils.helpers import (
     reset_screen,
 )
 from db.shop_db import shop_data
+from db.item_db import item_data
 from db.db_functions import reload_player_data, save_player_data
 
 
@@ -154,6 +155,9 @@ def handle_buying(current_items):
 def purchase_item(item: dict):
     player_data = reload_player_data()
     reset_screen()
+    #
+    print(item)
+    #
     if player_data["current_funds"] < item["base_price"]:
         print(color_text("You don't have the funds for that item!", "red", "underline"))
         press_space_to_continue()
@@ -177,6 +181,7 @@ def purchase_item(item: dict):
                     print(color_text(f"You purchased the {item['name']}!", "green"))
                     add_vertical_spaces(1)
                     press_space_to_continue()
+                    #! If they just bought a weapon
                     if item["category"] == "weapons":
                         while True:
                             reset_screen()
@@ -197,7 +202,9 @@ def purchase_item(item: dict):
                             if old_weapon_input in ["sell it", "store it"]:
                                 reset_screen()
                                 if old_weapon_input == "store it":
-                                    player_data["stored_weapons"].append(item)
+                                    player_data["stored_weapons"].append(
+                                        player_data["current_weapon"]
+                                    )
                                     print(
                                         color_text(
                                             f"You had your previous weapon stored and equipped the {item['name']}!",
@@ -219,13 +226,62 @@ def purchase_item(item: dict):
                                 add_vertical_spaces(1)
                                 press_space_to_continue()
                                 return
-
+                    #! If they just bought anything else
                     else:
-                        pass
-                press_space_to_continue()
+                        player_data["item_inventory"].append(item["name"].lower())
+                        save_player_data(player_data)
+                        return
+
                 break
 
 
 def handle_selling():
     player_data = reload_player_data()
-    pass
+    stored_weapons: list[dict] = player_data["stored_weapons"]
+    item_inventory: list[str] = player_data["item_inventory"]
+    sellable_weapons = []
+
+    while True:
+        reset_screen()
+        print(color_text("Here are your stored weapons:", "magenta"))
+        for weapon in stored_weapons:
+            print(color_text(weapon["name"], "cyan", "underline"))
+            print(color_text(weapon["description"], "blue"))
+            print(
+                color_text(f'Can be sold for: {weapon["resell_price"]} Gold', "yellow")
+            )
+            sellable_weapons.append(weapon["name"].lower())
+            add_vertical_spaces(1)
+        print(color_text("Here are the items in your inventory:", "magenta"))
+        for item in item_inventory:
+            if item in item_data["quest_items"]:
+                item_dict = item_data["quest_items"][item]
+            if item in item_data["heal_items"]:
+                item_dict = item_data["heal_items"][item]
+            if item in item_data["buff_items"]:
+                item_dict = item_data["buff_items"][item]
+            if item in item_data["battle_items"]:
+                item_dict = item_data["battle_items"][item]
+            print(
+                f'{color_text(item_dict["name"], "cyan", "underline")} => {color_text(item_dict["description"], "blue")}'
+            )
+            print(
+                color_text(
+                    f'Can be sold for: {item_dict["resell_price"]} Gold', "yellow"
+                )
+            )
+            add_vertical_spaces(1)
+        print(color_text("What would you like to sell?", "green"))
+        print(color_text('Or enter "Back" to change your mind', "yellow"))
+        sell_input = input().strip().lower()
+        if sell_input == "back":
+            return
+        if sell_input in sellable_weapons:
+            print("you tryna sell a weapon")
+            press_space_to_continue()
+            break
+
+        if sell_input in item_inventory:
+            print("you tryna sell an item")
+            press_space_to_continue()
+            break
