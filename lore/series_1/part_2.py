@@ -41,6 +41,7 @@ def dialogue_series_1_part_2():
         print(dialogue_portion["5a"])
         add_vertical_spaces(1)
     print(dialogue_portion[6])
+    add_vertical_spaces(1)
     press_space_to_continue()
     # ! Back to story, they walk through the town to the Wise Witch's place
 

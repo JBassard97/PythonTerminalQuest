@@ -1,9 +1,10 @@
 import importlib
 import db.player_db as player_db
 import db.battle_db as battle_db
+import os
 
-player_db_file_path = "db/player_db.py"
-battle_db_file_path = "db/battle_db.py"
+player_db_file_path = os.path.join("db", "player_db.py")
+battle_db_file_path = os.path.join("db", "battle_db.py")
 
 # ! PLAYER_DB FUNCTIONS
 
