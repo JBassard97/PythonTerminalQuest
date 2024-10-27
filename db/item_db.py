@@ -12,7 +12,7 @@ item_data = {
             "name": "Golden Crucifix",
             "description": "A small golden cross adorned with rubies and sapphires, might come in handy later",
             "base_price": 1000,
-            "resell_price": 2000,
+            "resell_price": 2000,  # The game REALLY wants you to sell this since it is an ace in the hole
         },
     },
     "heal_items": {
@@ -21,7 +21,7 @@ item_data = {
             "category": "heal_items",
             "name": "Potion",
             "description": "Recovers 20 health",
-            "heal_value": 20,
+            "heal_value": 20,  # Recovers exactly 20 points of health
             "base_price": 10,
             "resell_price": 7,
         },
@@ -72,7 +72,7 @@ item_data = {
             "category": "buff_items",
             "name": "Attack Booster",
             "description": "A cinnamon-flavored liquid that boosts attack by 25%",
-            "attack_boost": 25,
+            "attack_boost": 25,  # Increases player attack by 25% of itself
             "base_price": 35,
             "resell_price": 25,
         },

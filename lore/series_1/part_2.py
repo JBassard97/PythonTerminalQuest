@@ -25,22 +25,28 @@ def dialogue_series_1_part_2():
     add_vertical_spaces(1)
     print_multiple_dialogues(dialogue_portion, 3, 5)
     add_vertical_spaces(1)
+    # ! Ask if they want to go shopping
     shopping_decision = ask_go_shopping()
     reset_screen()
-    if shopping_decision:  #! They Go Shopping $$$
+    if shopping_decision:
         print(dialogue_portion["5b"])
         add_vertical_spaces(1)
+        press_space_to_continue()
+        reset_screen
         ask_which_shop()
         reset_screen()
-        print("you are finished shopping")
+        print(dialogue_portion["5c"])
+        add_vertical_spaces(1)
     else:
         print(dialogue_portion["5a"])
         add_vertical_spaces(1)
+    print(dialogue_portion[6])
     press_space_to_continue()
+    # ! Back to story, they walk through the town to the Wise Witch's place
 
     # print("AHHHH SPIDERS!")
     # press_space_to_continue()
-    # start_random_battle(["spider"])
+    # start_random_battle()
     # reset_screen()
     # print("AHH EVEN MORE!")
     # start_random_battle(["spider", "rat"])

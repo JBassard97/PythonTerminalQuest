@@ -157,6 +157,8 @@ dialogue_dict = {
                 f"{companion_name} eagerly nods their head. Better to live it large now and reap the benefits later!",
                 "green",
             ),
+            "5c": ct("Now that shopping is done...", "green"),
+            6: ct("Back to the quest at hand!", "magenta"),
         },
     }
 }
