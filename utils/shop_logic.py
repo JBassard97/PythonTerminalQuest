@@ -32,7 +32,7 @@ def print_available_shops(available_shops: list[str]):
     for shop in available_shops:
         print(color_text(shop.title(), "cyan"))
     add_vertical_spaces(1)
-    print(color_text("Which shop would you like to visit?", "yellow"))
+    print(color_text("Which shop would you like to visit?", "green"))
     print(color_text('Or enter "Back" to change your mind', "yellow"))
     add_vertical_spaces(1)
 
@@ -41,7 +41,7 @@ def ask_go_shopping():
     valid_inputs = ["yes", "no"]
     print_current_funds()
     print(color_text("Would you like to go shopping?", "magenta"))
-    print(color_text("Enter Yes or No:", "yellow"))
+    print(color_text('Enter "Yes" or "No"', "yellow"))
     while True:
         shopping_input = input().strip().lower()
         if shopping_input in valid_inputs:
@@ -139,7 +139,7 @@ def handle_buying(current_items):
                 purchasable_items.append(item)
                 purchasable_item_names.append(item["name"].lower())
 
-        print(color_text("What would you like to buy?", "yellow"))
+        print(color_text("What would you like to buy?", "green"))
         print(color_text('Or enter "Back" to change your mind', "yellow"))
         add_vertical_spaces(1)
 
@@ -155,9 +155,7 @@ def handle_buying(current_items):
 def purchase_item(item: dict):
     player_data = reload_player_data()
     reset_screen()
-    #
-    print(item)
-    #
+
     if player_data["current_funds"] < item["base_price"]:
         print(color_text("You don't have the funds for that item!", "red", "underline"))
         press_space_to_continue()
@@ -167,7 +165,7 @@ def purchase_item(item: dict):
             print(
                 color_text(
                     f"Are you sure you want to buy the {item['name']} for {item['base_price']} Gold?",
-                    "cyan",
+                    "green",
                 )
             )
             print(color_text("Enter Yes or No:", "yellow"))
@@ -194,10 +192,11 @@ def purchase_item(item: dict):
                             add_vertical_spaces(1)
                             print(
                                 color_text(
-                                    f"Would you like to sell your {player_data['current_weapon']['name']} for {player_data['current_weapon']['resell_price']} Gold or store it for later?"
+                                    f"Would you like to sell your {player_data['current_weapon']['name']} for {player_data['current_weapon']['resell_price']} Gold or store it for later?",
+                                    "green",
                                 )
                             )
-                            print(color_text('Enter "Sell It" or "Store It":'))
+                            print(color_text('Enter "Sell It" or "Store It"', "yellow"))
                             old_weapon_input = input().strip().lower()
                             if old_weapon_input in ["sell it", "store it"]:
                                 reset_screen()
@@ -208,7 +207,7 @@ def purchase_item(item: dict):
                                     print(
                                         color_text(
                                             f"You had your previous weapon stored and equipped the {item['name']}!",
-                                            "blue",
+                                            "green",
                                         )
                                     )
                                 else:
@@ -218,7 +217,7 @@ def purchase_item(item: dict):
                                     print(
                                         color_text(
                                             f"You sold your previous weapon and equipped the {item['name']}!",
-                                            "blue",
+                                            "green",
                                         )
                                     )
                                 player_data["current_weapon"] = item
@@ -236,52 +235,118 @@ def purchase_item(item: dict):
 
 
 def handle_selling():
-    player_data = reload_player_data()
-    stored_weapons: list[dict] = player_data["stored_weapons"]
-    item_inventory: list[str] = player_data["item_inventory"]
-    sellable_weapons = []
-
     while True:
+        player_data = reload_player_data()
+        stored_weapons: list[dict] = player_data["stored_weapons"]
+        item_inventory: list[str] = player_data["item_inventory"]
+        sellable_weapons = []
+
+        if len(stored_weapons) == 0 and len(item_inventory) == 0:
+            reset_screen()
+            print(color_text("You don't have any items or weapons to sell!", "red"))
+            add_vertical_spaces(1)
+            press_space_to_continue()
+            return
+
         reset_screen()
-        print(color_text("Here are your stored weapons:", "magenta"))
-        for weapon in stored_weapons:
-            print(color_text(weapon["name"], "cyan", "underline"))
-            print(color_text(weapon["description"], "blue"))
-            print(
-                color_text(f'Can be sold for: {weapon["resell_price"]} Gold', "yellow")
-            )
-            sellable_weapons.append(weapon["name"].lower())
-            add_vertical_spaces(1)
-        print(color_text("Here are the items in your inventory:", "magenta"))
-        for item in item_inventory:
-            if item in item_data["quest_items"]:
-                item_dict = item_data["quest_items"][item]
-            if item in item_data["heal_items"]:
-                item_dict = item_data["heal_items"][item]
-            if item in item_data["buff_items"]:
-                item_dict = item_data["buff_items"][item]
-            if item in item_data["battle_items"]:
-                item_dict = item_data["battle_items"][item]
-            print(
-                f'{color_text(item_dict["name"], "cyan", "underline")} => {color_text(item_dict["description"], "blue")}'
-            )
-            print(
-                color_text(
-                    f'Can be sold for: {item_dict["resell_price"]} Gold', "yellow"
+        print_current_funds()
+        if len(stored_weapons) > 0:
+            print(color_text("Here are your stored weapons:", "magenta"))
+            for weapon in stored_weapons:
+                print(color_text(weapon["name"], "cyan", "underline"))
+                print(color_text(weapon["description"], "blue"))
+                print(
+                    color_text(
+                        f'Can be sold for: {weapon["resell_price"]} Gold', "yellow"
+                    )
                 )
-            )
-            add_vertical_spaces(1)
+                sellable_weapons.append(weapon["name"].lower())
+                add_vertical_spaces(1)
+        if len(item_inventory) > 0:
+            print(color_text("Here are the items in your inventory:", "magenta"))
+            for item in item_inventory:
+                if item in item_data["quest_items"]:
+                    item_dict = item_data["quest_items"][item]
+                if item in item_data["heal_items"]:
+                    item_dict = item_data["heal_items"][item]
+                if item in item_data["buff_items"]:
+                    item_dict = item_data["buff_items"][item]
+                if item in item_data["battle_items"]:
+                    item_dict = item_data["battle_items"][item]
+                print(
+                    f'{color_text(item_dict["name"], "cyan", "underline")} => {color_text(item_dict["description"], "blue")}'
+                )
+                print(
+                    color_text(
+                        f'Can be sold for: {item_dict["resell_price"]} Gold', "yellow"
+                    )
+                )
+                add_vertical_spaces(1)
         print(color_text("What would you like to sell?", "green"))
         print(color_text('Or enter "Back" to change your mind', "yellow"))
         sell_input = input().strip().lower()
         if sell_input == "back":
             return
         if sell_input in sellable_weapons:
-            print("you tryna sell a weapon")
-            press_space_to_continue()
-            break
-
+            while True:
+                reset_screen()
+                weapon_index = sellable_weapons.index(sell_input)
+                weapon_to_sell = player_data["stored_weapons"][weapon_index]
+                print_current_funds()
+                add_vertical_spaces(1)
+                print(
+                    color_text(
+                        f'Are you sure you want to sell the {weapon_to_sell["name"]} for {weapon_to_sell["resell_price"]} Gold?',
+                        "green",
+                    )
+                )
+                print(color_text('Enter "Yes" or "No"', "yellow"))
+                confirm_input = input().strip().lower()
+                if confirm_input in ["yes", "no"]:
+                    if confirm_input == "yes":
+                        reset_screen()
+                        print(
+                            color_text(
+                                f"You sold the {weapon_to_sell['name']} for {weapon_to_sell['resell_price']} Gold!",
+                                "green",
+                            )
+                        )
+                        player_data["current_funds"] += weapon_to_sell["resell_price"]
+                        del player_data["stored_weapons"][weapon_index]
+                        save_player_data(player_data)
+                        add_vertical_spaces(1)
+                        press_space_to_continue()
+                        break
+                    else:
+                        break
         if sell_input in item_inventory:
-            print("you tryna sell an item")
-            press_space_to_continue()
-            break
+            while True:
+                reset_screen()
+                item_index = item_inventory.index(sell_input)
+                print_current_funds()
+                add_vertical_spaces(1)
+                print(
+                    color_text(
+                        f'Are you sure you want to sell the {item_dict["name"]} for {item_dict["resell_price"]} Gold?',
+                        "green",
+                    )
+                )
+                print(color_text('Enter "Yes" or "No"', "yellow"))
+                confirm_input = input().strip().lower()
+                if confirm_input in ["yes", "no"]:
+                    if confirm_input == "yes":
+                        reset_screen()
+                        print(
+                            color_text(
+                                f'You sold the {item_dict["name"]} for {item_dict["resell_price"]} Gold!',
+                                "green",
+                            )
+                        )
+                        player_data["current_funds"] += item_dict["resell_price"]
+                        del player_data["item_inventory"][item_index]
+                        save_player_data(player_data)
+                        add_vertical_spaces(1)
+                        press_space_to_continue()
+                        break
+                    else:
+                        break
